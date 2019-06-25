@@ -1,0 +1,99 @@
+<html>
+<head>
+<style>
+table, td {
+  border: 1px solid black;
+}
+</style>
+<script src="https://www.moneybutton.com/moneybutton.js"></script>
+<script src='https://unpkg.com/datapay'></script>
+<script src='https://unpkg.com/databutton'></script>
+
+<title>/test/</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css" />
+<script>
+//find OP posts
+var query = {
+  "v": 3,
+  "q": {
+    "find": {
+    "out.s1": "1PLKxzCP7MNVKT7bW5JzAig1VTwMxQKJrR" },
+    "limit": 8
+  },
+  "r": {
+    "f": "[ .[] | { block: .blk.i?, timestamp: .blk.t?, content: .out[0]?.s2 }]"
+
+  }
+}
+var b64 = btoa(JSON.stringify(query));
+var url = "https://genesis.bitdb.network/q/1FnauZ9aUH2Bex6JzdcV4eNX7oLSSEbxtN/" + b64;
+var header = {
+  headers: { key: "14QX7pn5GbipWvNLyDfrdcZLzwvPYJSnhB" }
+};
+fetch(url, header).then(function(r) {
+  return r.json()
+}).then(function(r) {
+  // "r.c" stands for confirmed transactions response array
+  // Parse the response and render the results on the screen
+  r.c.forEach(function(output) {
+    var post = document.getElementById("post1");
+    post.innerHTML = 
+    "<b>Block: </b>" + 
+    output.block + 
+    " <i>Post ID:</i>  " +
+     output.timestamp +
+      "<br />" +
+       "<br />" +
+        output.content +
+         "<br />" +
+          "<br />";
+    document.body.appendChild(post1);
+  })
+})
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	document.querySelector("#done").addEventListener("click", function(e) {
+    document.querySelector("#submit").classList.remove('hidden')
+   	databutton.build({
+      data: ["1PLKxzCP7MNVKT7bW5JzAig1VTwMxQKJrR", document.querySelector("#msg").value],
+      button: {
+        $el: "#button",
+        label: "ᶳᵊꞂↁ",
+        onPayment: function(e) {
+          console.log("paid!", e)
+          setTimeout(function() {
+            feed()
+          }, 1000)
+        }
+      }
+    })
+  })
+})
+</script>
+</head>
+<body>
+<center>
+<h1>/test/</h1>
+
+<h3><i>?</i></h3>
+<center>
+      <div class='form'>
+      <textarea id='msg' placeholder='Start a new thread...'></textarea>
+      <a href='#' id='done' class='btn'>Post</a>
+      <div id='submit' class='hidden'>
+      <div id='button'></div>
+      </div>
+      </center>
+<div id="post1"></div>
+<div id="post2"></div>
+<div id="post3"></div>
+<div id="post4"></div>
+<div id="post5"></div>
+<div id="post6"></div>
+
+</body>
+
+</html>
