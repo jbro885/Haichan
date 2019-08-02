@@ -14,7 +14,7 @@ table, td {
 <link href="./styles/style.css" rel="stylesheet" type="text/css" />
 <script>
 //find OP posts
-var query = {
+var thread = {
   "v": 3,
   "q": {
     "find": {
@@ -34,9 +34,7 @@ var header = {
 fetch(url, header).then(function(r) {
   return r.json()
 }).then(function(r) {
-  // "r.c" stands for confirmed transactions response array
-  // Parse the response and render the results on the screen
-  r.c.forEach(function(output) {
+   r.c.forEach(function(output) {
     var post = document.getElementById("post1");
     post.innerHTML = 
     "<b>Block: </b>" + 

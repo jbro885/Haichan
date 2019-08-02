@@ -22,13 +22,14 @@
 	<title>Haichan: A Peer-to-Peer Electronic Image Board</title>
 	<link href="../styles/style.css" rel="stylesheet" type="text/css" />
 <script>
+// query for threads
 var threads = {
   "v": 3,
   "q": {
     "db": ["u","c"],
     "find": {
     "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje",
-	"out.s2": "/mu/",
+	"out.s2": "/b/",
 	"out.s3": "THREAD",
      },
     "limit": 20,
@@ -59,9 +60,14 @@ fetch(url, header).then(function(r) {
     var opid = "replydone" + threadid;
     img.setAttribute("src", `${url}`);
     thread.innerHTML =
-    "<button id=openreply>Reply</button>" + "<button id=tipop" + threadid + ">Tip</button>" + "<button id=seetx>Tx</button>" + "<p id=optx class='hidden'>" + output.txid + "<button id=closetx>Close</button>" + "</p>" +
+    "<button id=openreply>Reply</button>" + "<button id=tipop" 
+    + threadid + ">Tip</button>" + "<button id=seetx>Tx</button>" 
+    // minimize thread
+    //+ "<button class=minimize>[-]</button>" 
+    + "<p id=optx class='hidden'>" + output.txid + "<button id=closetx>Close</button>" + "</p>" +
     "<br />" +
-    "<div id=optipsubmit" + threadid + " class='hidden'>" + "</div>" + "<button id=optipclose" + threadid +" class='hidden'>Close</button>" +
+    "<div id=optipsubmit" + threadid + " class='hidden'>" + "</div>" 
+    + "<button id=optipclose" + threadid +" class='hidden'>Close</button>" +
     "<br />" +
     "<div class='op'>" +
     "<img src=" + `${url}` + " class=pic></img>" +
@@ -85,6 +91,12 @@ fetch(url, header).then(function(r) {
           "</div>" +
       "</center>";
     document.body.appendChild(thread);
+    //
+    //
+    //
+    //
+    //
+    //
     thread.querySelector("#openreply").addEventListener("click", function(e) {
       thread.querySelector("#replyform").classList.remove('hidden')
         thread.querySelector("#replyimglink").classList.remove('hidden')
@@ -111,7 +123,7 @@ fetch(url, header).then(function(r) {
     })
     thread.querySelector("#replydone" + threadid).addEventListener("click", function(e) {
    	  databutton.build({
-      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/mu/", "REPLY", thread.querySelector("#replyform").value, thread.querySelector("#replyimglink").value, threadid],
+      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/b/", "REPLY", thread.querySelector("#replyform").value, thread.querySelector("#replyimglink").value, threadid],
       button: {
         $el: "#replybutton" + threadid,
         label: "",
@@ -152,16 +164,16 @@ fetch(url, header).then(function(r) {
           "db": ["u","c"],
           "find": {
           "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje",
-		  "out.s2": "/mu/",
+		  "out.s2": "/b/",
 		  "out.s3": "REPLY",
           "out.s6": threadid
           },
           "limit": 100,
         },
         "r": {
-          "f": "[ .[] | {replytxid: .tx.h, replystamp: .blk.t?, replytxt: .out[0].s4, replyimg: .out[0].s5, replyto: .out[0].s6 }]"
+          "f": "[ .[] | { replyp: .in[0].e.a?, replytxid: .tx.h, replystamp: .blk.t?, replytxt: .out[0].s4, replyimg: .out[0].s5, replyto: .out[0].s6 }]"
         }
-      }
+      };
       var b64 = btoa(JSON.stringify(replies));
       var url = "https://genesis.bitdb.network/q/1FnauZ9aUH2Bex6JzdcV4eNX7oLSSEbxtN/" + b64;
       var header = {
@@ -172,6 +184,7 @@ fetch(url, header).then(function(r) {
       }).then(function(r) {
         let res = r.u.concat(r.c)
         res.forEach(function(output) {
+          var replyp = output.replyp;
           replyto = output.replyto;
           replytxt = output.replytxt;
           replytxid = output.replytxid;
@@ -179,13 +192,16 @@ fetch(url, header).then(function(r) {
           replyimg.setAttribute('class', 'replyimg');
           var replyurl = "https://bico.media/" + output.replyimg
           replyimg.setAttribute("src", `${url}`);
-          console.log(replytxt + "//             " + replytxid + "//    " + "is a reply to   " + replyto);
           var replyto = document.getElementById(`${replyto}`);
           var reply = document.createElement("div");
           reply.setAttribute("class", "reply");
           reply.innerHTML =
           "<br />" +
-          "<img src=" + `${replyurl}` + " class=replypic></img>" +
+          "<img src=" + `${replyurl}` + " class=replypic></img>" 
+          + "<button id=replytip" + threadid + " class=replytip>Tip</button>" +
+          "<br />" +
+          "<div id=replytipsubmit" + threadid + " class='hidden'>" + "</div>" +
+          "<button id=replytipclose" + threadid + " class='hidden'>Close</button>" +
           "<br />" +
           "<p class=replytext>" +
           replytxt +
@@ -194,6 +210,20 @@ fetch(url, header).then(function(r) {
           "<br />"  +
           "<hr />" ;
           thread.appendChild(reply);
+          thread.querySelector("#replytip" + threadid).addEventListener("click", function(e) {
+          thread.querySelector("#replytipsubmit" + threadid).classList.remove('hidden')
+          thread.querySelector("#replytipclose" + threadid).classList.remove('hidden')
+            const div = document.getElementById("replytipsubmit" + threadid);   
+          moneyButton.render(div, {
+            to: replyp,
+            amount: "0.01",
+            currency: "USD"
+          })
+        });
+        thread.querySelector("#replytipclose" + threadid).addEventListener("click", function(e) {
+          thread.querySelector("#replytipsubmit" + threadid).classList.add('hidden')
+          thread.querySelector("#replytipclose" + threadid).classList.add('hidden')
+        })
       })
     })
   })
@@ -202,9 +232,17 @@ fetch(url, header).then(function(r) {
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 	document.querySelector("#done").addEventListener("click", function(e) {
+        function validateimg () {
+            var imglink = thread.querySelector("#imglink").value;
+            console.log(imglink);
+            if (imglink == "") {
+                alert("Must be a b:// link");
+                return false;
+            }
+          }
     document.querySelector("#submit").classList.remove('hidden')
    	databutton.build({
-      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/mu/", "THREAD", document.querySelector("#newthread").value, document.querySelector("#imglink").value],
+      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/b/", "THREAD", document.querySelector("#newthread").value, document.querySelector("#imglink").value],
       button: {
         $el: "#button",
         label: "",
@@ -226,19 +264,16 @@ document.addEventListener("DOMContentLoaded", function() {
   })
 })
 </script>
-		</script>
 </head>
 <body>
 <center>
-<div class="topnav"><a href="../index.html">index</a> <a href="../about.html">about</a> <a href="/boards/b.html">/b/</a> <a href="/boards/pol.html">/pol/</a> <a href="/boards/biz.html">/biz/</a> <a href="/boards/tv.html">/tv/</a> <a href="/boards/g.html">/g/</a> <a href="/boards/a.html">/a/</a> <a class="active" href="/boards/mu.html">/mu/</a>
-	<a href="../library.html">image library</a>
-</div>
+<div class="topnav"><a href="../index.html">index</a> <a href="../about.html">about</a> <a class="active" href="/boards/b.html">/b/</a> <a href="/boards/pol.html">/pol/</a> <a href="/boards/biz.html">/biz/</a> <a href="/boards/tv.html">/tv/</a> <a href="/boards/g.html">/g/</a> <a href="/boards/a.html">/a/</a> <a href="/boards/mu.html">/mu/</a></div>
 
-<h1 class="glow"><span style="font-family:courier new,courier,monospace;">/mu/ - Music</span></h1>
+<h1 class="glow"><span style="font-family:courier new,courier,monospace;">/b/ - Random</span></h1>
 
-<textarea id="newthread" rows="5" cols="10" placeholder="Post a new thread..."></textarea>
+<textarea id="newthread" rows="5" cols="10" placeholder="Post a new thread..." required></textarea>
 		<br />
-		<input id="imglink" placeholder="b:// image link"></input>
+		<input id="imglink" placeholder="b:// image link" required minlength="68" required maxlength="68" required pattern="b://.{64}"></input>
 		<br />
 		<button href='#' id='done' class='post'>Post</a>
       	<div id='submit' class='hidden'>

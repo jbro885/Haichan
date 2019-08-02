@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+	<script src="https://www.moneybutton.com/moneybutton.js"></script>
+	<script src='https://unpkg.com/datapay'></script>
+	<script src='https://unpkg.com/databutton'></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link href="/apple-icon-57x57.png" rel="apple-touch-icon" sizes="57x57" />
 	<link href="/apple-icon-60x60.png" rel="apple-touch-icon" sizes="60x60" />
 	<link href="/apple-icon-72x72.png" rel="apple-touch-icon" sizes="72x72" />
@@ -17,23 +21,264 @@
 	<link href="/manifest.json" rel="manifest" /><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff">
 	<title>Haichan: A Peer-to-Peer Electronic Image Board</title>
 	<link href="../styles/style.css" rel="stylesheet" type="text/css" />
+<script>
+// query for threads
+var threads = {
+  "v": 3,
+  "q": {
+    "db": ["u","c"],
+    "find": {
+    "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje",
+	"out.s2": "/b/",
+	"out.s3": "THREAD",
+     },
+    "limit": 20,
+  },
+  "r": {
+    "f": "[ .[] | { op: .in[0].e.a?, txid: .tx.h, timestamp: .blk.t?, txt: .out[0]?.s4, img: .out[0].s5 }]"
+  }
+}
+var b64 = btoa(JSON.stringify(threads));
+var url = "https://genesis.bitdb.network/q/1FnauZ9aUH2Bex6JzdcV4eNX7oLSSEbxtN/" + b64;
+var header = {
+  headers: { key: "14QX7pn5GbipWvNLyDfrdcZLzwvPYJSnhB" }
+};
+fetch(url, header).then(function(r) {
+  return r.json()
+}).then(function(r) {
+  let res = r.u.concat(r.c)
+  res.forEach(function(output) {
+    var threadid = output.txid;
+    var content = output.txt;
+    var op = output.op
+    console.log(`message is ${content}`);
+    var thread = document.createElement("div");
+    thread.id = (`${threadid}`);
+    thread.setAttribute('class', 'thread');
+    var img = document.createElement('img');
+    var url = "https://bico.media/" + output.img;
+    var opid = "replydone" + threadid;
+    img.setAttribute("src", `${url}`);
+    thread.innerHTML =
+    "<button id=openreply>Reply</button>" + "<button id=tipop" 
+    + threadid + ">Tip</button>" + "<button id=seetx>Tx</button>" 
+    // minimize thread
+    //+ "<button class=minimize>[-]</button>" 
+    + "<p id=optx class='hidden'>" + output.txid + "<button id=closetx>Close</button>" + "</p>" +
+    "<br />" +
+    "<div id=optipsubmit" + threadid + " class='hidden'>" + "</div>" 
+    + "<button id=optipclose" + threadid +" class='hidden'>Close</button>" +
+    "<br />" +
+    "<div class='op'>" +
+    "<img src=" + `${url}` + " class=pic></img>" +
+    "<br />" +
+    "<p class=threadtext>" +
+    content + 
+   "</p>" +
+      "<hr />" +
+    "<textarea id=replyform placeholder='Type your reply...' class='hidden'></textarea>" +
+    "<br />" +
+    "<br />" +
+    "<input id=replyimglink placeholder='b:// image link' class='hidden'></textarea>" +
+    "<br />" +
+    "<button href='#' id=replydone" + threadid + " class='hidden'>Post reply!</button>" +
+      "<button href='#' id='closereply' style='center' class='hidden'>Close</button>" +
+      "<br />" +
+      "<div id='replysubmit' class='hidden'>" +
+      "<br />" +
+        "<div id=replybutton" + threadid + "></div>" +
+          "</div>" +
+          "</div>" +
+      "</center>";
+    document.body.appendChild(thread);
+    //
+    //
+    //
+    //
+    //
+    //
+    thread.querySelector("#openreply").addEventListener("click", function(e) {
+      thread.querySelector("#replyform").classList.remove('hidden')
+        thread.querySelector("#replyimglink").classList.remove('hidden')
+        thread.querySelector("#replysubmit").classList.remove('hidden')
+        thread.querySelector("#closereply").classList.remove('hidden')
+        thread.querySelector("#replydone" + threadid).classList.remove('hidden')
+        thread.querySelector("#openreply").classList.add('hidden')
+    });
+    thread.querySelector("#seetx").addEventListener("click", function(e) {
+      thread.querySelector("#optx").classList.remove('hidden')
+      thread.querySelector("#closetx").classList.remove('hidden')
+    });
+    thread.querySelector("#closetx").addEventListener("click", function(e) {
+      thread.querySelector("#optx").classList.add('hidden')
+      thread.querySelector("#closetx").classList.add('hidden')
+    });
+    thread.querySelector("#closereply").addEventListener("click", function(e) {
+      thread.querySelector("#replyform").classList.add('hidden')
+        thread.querySelector("#replyimglink").classList.add('hidden')
+        thread.querySelector("#replysubmit").classList.add('hidden')
+        thread.querySelector("#replydone" + threadid).classList.add('hidden')
+        thread.querySelector("#openreply").classList.remove('hidden')
+        thread.querySelector("#closereply").classList.add('hidden')
+    })
+    thread.querySelector("#replydone" + threadid).addEventListener("click", function(e) {
+   	  databutton.build({
+      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/b/", "REPLY", thread.querySelector("#replyform").value, thread.querySelector("#replyimglink").value, threadid],
+      button: {
+        $el: "#replybutton" + threadid,
+        label: "",
+        $pay: {
+          to: [{
+            address: "1MYmU9FUtotg1xfQwuJgYKydt5Mg8ueV62",
+            value: 5000
+          }],
+        },
+        onPayment: function(e) {
+          console.log("paid!", e)
+          setTimeout(function() {
+            feed()
+          }, 1000)
+        }
+      }
+    })
+  });
+  thread.querySelector("#tipop" + threadid).addEventListener("click", function(e) {
+    thread.querySelector("#optipclose" + threadid).classList.remove('hidden')
+  });
+  thread.querySelector("#optipclose" + threadid).addEventListener("click", function(e) {
+    thread.querySelector("#optipsubmit" + threadid).classList.add('hidden')
+    thread.querySelector("#optipclose" + threadid).classList.add('hidden')
+  });
+  thread.querySelector("#tipop" + threadid).addEventListener("click", function(e) {
+    thread.querySelector("#optipsubmit" + threadid).classList.remove('hidden')
+    const div = document.getElementById("optipsubmit" + threadid);   
+    moneyButton.render(div, {
+      to: op,
+      amount: "0.01",
+      currency: "USD"
+    })
+  });
+      var replies = {
+        "v": 3,
+        "q": {
+          "db": ["u","c"],
+          "find": {
+          "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje",
+		  "out.s2": "/b/",
+		  "out.s3": "REPLY",
+          "out.s6": threadid
+          },
+          "limit": 100,
+        },
+        "r": {
+          "f": "[ .[] | { replyp: .in[0].e.a?, replytxid: .tx.h, replystamp: .blk.t?, replytxt: .out[0].s4, replyimg: .out[0].s5, replyto: .out[0].s6 }]"
+        }
+      };
+      var b64 = btoa(JSON.stringify(replies));
+      var url = "https://genesis.bitdb.network/q/1FnauZ9aUH2Bex6JzdcV4eNX7oLSSEbxtN/" + b64;
+      var header = {
+        headers: { key: "14QX7pn5GbipWvNLyDfrdcZLzwvPYJSnhB" }
+      };
+      fetch(url, header).then(function(r) {
+        return r.json()
+      }).then(function(r) {
+        let res = r.u.concat(r.c)
+        res.forEach(function(output) {
+          var replyp = output.replyp;
+          replyto = output.replyto;
+          replytxt = output.replytxt;
+          replytxid = output.replytxid;
+          var replyimg = document.createElement('img');
+          replyimg.setAttribute('class', 'replyimg');
+          var replyurl = "https://bico.media/" + output.replyimg
+          replyimg.setAttribute("src", `${url}`);
+          var replyto = document.getElementById(`${replyto}`);
+          var reply = document.createElement("div");
+          reply.setAttribute("class", "reply");
+          reply.innerHTML =
+          "<br />" +
+          "<img src=" + `${replyurl}` + " class=replypic></img>" 
+          + "<button id=replytip" + threadid + " class=replytip>Tip</button>" +
+          "<br />" +
+          "<div id=replytipsubmit" + threadid + " class='hidden'>" + "</div>" +
+          "<button id=replytipclose" + threadid + " class='hidden'>Close</button>" +
+          "<br />" +
+          "<p class=replytext>" +
+          replytxt +
+          "</p>" +
+          "<br />" +
+          "<br />"  +
+          "<hr />" ;
+          thread.appendChild(reply);
+          thread.querySelector("#replytip" + threadid).addEventListener("click", function(e) {
+          thread.querySelector("#replytipsubmit" + threadid).classList.remove('hidden')
+          thread.querySelector("#replytipclose" + threadid).classList.remove('hidden')
+            const div = document.getElementById("replytipsubmit" + threadid);   
+          moneyButton.render(div, {
+            to: replyp,
+            amount: "0.01",
+            currency: "USD"
+          })
+        });
+        thread.querySelector("#replytipclose" + threadid).addEventListener("click", function(e) {
+          thread.querySelector("#replytipsubmit" + threadid).classList.add('hidden')
+          thread.querySelector("#replytipclose" + threadid).classList.add('hidden')
+        })
+      })
+    })
+  })
+})
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	document.querySelector("#done").addEventListener("click", function(e) {
+        function validateimg () {
+            var imglink = thread.querySelector("#imglink").value;
+            console.log(imglink);
+            if (imglink == "") {
+                alert("Must be a b:// link");
+                return false;
+            }
+        }
+    document.querySelector("#submit").classList.remove('hidden')
+   	databutton.build({
+      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/b/", "THREAD", document.querySelector("#newthread").value, document.querySelector("#imglink").value],
+      button: {
+        $el: "#button",
+        label: "",
+        $pay: {
+          to: [{
+            address: "1MYmU9FUtotg1xfQwuJgYKydt5Mg8ueV62",
+            value: 5000
+          }],
+        },
+        onPayment: function(e) {
+          console.log("paid!", e)
+          setTimeout(function() {
+            feed();
+            window.location.reload();
+          }, 1000)
+        }
+      }
+    })
+  })
+})
+</script>
 </head>
 <body>
 <center>
-<div class="topnav"><a href="index.html">index</a> <a href="about.html">about</a> <a class="active" href="b.html">/b/</a> <a href="pol.html">/pol/</a> <a href="biz.html">/biz/</a> <a href="tv.html">/tv/</a> <a href="g.html">/g/</a> <a href="a.html">/a/</a> <a href="mu.html">/mu/</a></div>
+<div class="topnav"><a href="../index.html">index</a> <a href="../about.html">about</a> <a class="active" href="/boards/b.html">/b/</a> <a href="/boards/pol.html">/pol/</a> <a href="/boards/biz.html">/biz/</a> <a href="/boards/tv.html">/tv/</a> <a href="/boards/g.html">/g/</a> <a href="/boards/a.html">/a/</a> <a href="/boards/mu.html">/mu/</a></div>
 
 <h1 class="glow"><span style="font-family:courier new,courier,monospace;">/b/ - Random</span></h1>
 
-<div class="form"><input placeholder="Start a new thread..." type="text" /><br />
-<br />
-<input id="img" placeholder="Image (b://)" type="text" /><br />
-<br />
-<span style="font-family:courier new,courier,monospace;"><a class="button button1" href="#" id="done">Post</a></span>
-
-<div class="hidden" id="submit">
-<div id="button"></div>
-</div>
-</div>
+<textarea id="newthread" rows="5" cols="10" placeholder="Post a new thread..."></textarea>
+		<br />
+		<input id="imglink" placeholder="b:// image link" required minlength="68" required maxlength="68" required pattern="b://.{64}"></input>
+		<br />
+		<button href='#' id='done' class='post'>Post</a>
+      	<div id='submit' class='hidden'>
+      	<div id='button'></div>
+        </button>
 </center>
 
 <h2><span style="font-family:courier new,courier,monospace;">Threads:</span></h2>
