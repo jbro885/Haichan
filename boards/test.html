@@ -14,10 +14,6 @@
 	<link href="/apple-icon-144x144.png" rel="apple-touch-icon" sizes="144x144" />
 	<link href="/apple-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
 	<link href="/apple-icon-180x180.png" rel="apple-touch-icon" sizes="180x180" />
-	<link href="/android-icon-192x192.png" rel="icon" sizes="192x192" type="image/png" />
-	<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
-	<link href="/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png" />
-	<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png" />
 	<link href="/manifest.json" rel="manifest" /><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff">
 	<title>Haichan: A Peer-to-Peer Electronic Image Board</title>
 	<link href="../styles/style.css" rel="stylesheet" type="text/css" />
@@ -171,7 +167,7 @@ fetch(url, header).then(function(r) {
           "limit": 100,
         },
         "r": {
-          "f": "[ .[] | { replyp: .in[0].e.a?, replytxid: .tx.h, replystamp: .blk.t?, replytxt: .out[0].s4, replyimg: .out[0].s5, replyto: .out[0].s6 }]"
+          "f": "[ .[] | { replyp: .in[0].e.a, replytxid: .tx.h, replystamp: .blk.t?, replytxt: .out[0].s4, replyimg: .out[0].s5, replyto: .out[0].s6 }]"
         }
       };
       var b64 = btoa(JSON.stringify(replies));
@@ -198,10 +194,10 @@ fetch(url, header).then(function(r) {
           reply.innerHTML =
           "<br />" +
           "<img src=" + `${replyurl}` + " class=replypic></img>" 
-          + "<button id=replytip" + threadid + " class=replytip>Tip</button>" +
+          + "<button id=replytip" + replyp +" class=replytip>Tip</button>" +
           "<br />" +
-          "<div id=replytipsubmit" + threadid + " class='hidden'>" + "</div>" +
-          "<button id=replytipclose" + threadid + " class='hidden'>Close</button>" +
+          "<div id=replytipsubmit" + replyp + " class='hidden'>" + "</div>" +
+          "<button id=replytipclose" + replyp + " class='hidden'>Close</button>" +
           "<br />" +
           "<p class=replytext>" +
           replytxt +
@@ -210,19 +206,19 @@ fetch(url, header).then(function(r) {
           "<br />"  +
           "<hr />" ;
           thread.appendChild(reply);
-          thread.querySelector("#replytip" + threadid).addEventListener("click", function(e) {
-          thread.querySelector("#replytipsubmit" + threadid).classList.remove('hidden')
-          thread.querySelector("#replytipclose" + threadid).classList.remove('hidden')
-            const div = document.getElementById("replytipsubmit" + threadid);   
+          thread.querySelector("#replytip" + replyp).addEventListener("click", function(e) {
+          thread.querySelector("#replytipsubmit" + replyp).classList.remove('hidden')
+          thread.querySelector("#replytipclose" + replyp).classList.remove('hidden')
+            const div = document.getElementById("replytipsubmit" + replyp);   
           moneyButton.render(div, {
             to: replyp,
             amount: "0.01",
             currency: "USD"
           })
         });
-        thread.querySelector("#replytipclose" + threadid).addEventListener("click", function(e) {
-          thread.querySelector("#replytipsubmit" + threadid).classList.add('hidden')
-          thread.querySelector("#replytipclose" + threadid).classList.add('hidden')
+        thread.querySelector("#replytipclose" + replyp).addEventListener("click", function(e) {
+          thread.querySelector("#replytipsubmit" + replyp).classList.add('hidden')
+          thread.querySelector("#replytipclose" + reply).classList.add('hidden')
         })
       })
     })

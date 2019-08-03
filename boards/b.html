@@ -198,10 +198,10 @@ fetch(url, header).then(function(r) {
           reply.innerHTML =
           "<br />" +
           "<img src=" + `${replyurl}` + " class=replypic></img>" 
-          + "<button id=replytip" + threadid + " class=replytip>Tip</button>" +
+          + "<button id=replytip" + replyp +" class=replytip>Tip</button>" +
           "<br />" +
-          "<div id=replytipsubmit" + threadid + " class='hidden'>" + "</div>" +
-          "<button id=replytipclose" + threadid + " class='hidden'>Close</button>" +
+          "<div id=replytipsubmit" + replyp + " class='hidden'>" + "</div>" +
+          "<button id=replytipclose" + replyp + " class='hidden'>Close</button>" +
           "<br />" +
           "<p class=replytext>" +
           replytxt +
@@ -210,19 +210,19 @@ fetch(url, header).then(function(r) {
           "<br />"  +
           "<hr />" ;
           thread.appendChild(reply);
-          thread.querySelector("#replytip" + threadid).addEventListener("click", function(e) {
-          thread.querySelector("#replytipsubmit" + threadid).classList.remove('hidden')
-          thread.querySelector("#replytipclose" + threadid).classList.remove('hidden')
-            const div = document.getElementById("replytipsubmit" + threadid);   
+          thread.querySelector("#replytip" + replyp).addEventListener("click", function(e) {
+          thread.querySelector("#replytipsubmit" + replyp).classList.remove('hidden')
+          thread.querySelector("#replytipclose" + replyp).classList.remove('hidden')
+            const div = document.getElementById("replytipsubmit" + replyp);   
           moneyButton.render(div, {
             to: replyp,
             amount: "0.01",
             currency: "USD"
           })
         });
-        thread.querySelector("#replytipclose" + threadid).addEventListener("click", function(e) {
-          thread.querySelector("#replytipsubmit" + threadid).classList.add('hidden')
-          thread.querySelector("#replytipclose" + threadid).classList.add('hidden')
+        thread.querySelector("#replytipclose" + replyp).addEventListener("click", function(e) {
+          thread.querySelector("#replytipsubmit" + replyp).classList.add('hidden')
+          thread.querySelector("#replytipclose" + replyp).classList.add('hidden')
         })
       })
     })
@@ -267,8 +267,16 @@ document.addEventListener("DOMContentLoaded", function() {
 </head>
 <body>
 <center>
-<div class="topnav"><a href="../index.html">index</a> <a href="../about.html">about</a> <a class="active" href="/boards/b.html">/b/</a> <a href="/boards/pol.html">/pol/</a> <a href="/boards/biz.html">/biz/</a> <a href="/boards/tv.html">/tv/</a> <a href="/boards/g.html">/g/</a> <a href="/boards/a.html">/a/</a> <a href="/boards/mu.html">/mu/</a></div>
-
+<div class="topnav"><a href="../index.html">index</a> 
+<a href="../about.html">about</a> 
+<a class="active" href="/boards/b.html">/b/</a> 
+<a href="/boards/pol.html">/pol/</a> 
+<a href="/boards/biz.html">/biz/</a> 
+<a href="/boards/tv.html">/tv/</a> 
+<a href="/boards/g.html">/g/</a> 
+<a href="/boards/a.html">/a/</a> 
+<a href="/boards/mu.html">/mu/</a>
+<a href="../library.html">image library</a></div>
 <h1 class="glow"><span style="font-family:courier new,courier,monospace;">/b/ - Random</span></h1>
 
 <textarea id="newthread" rows="5" cols="10" placeholder="Post a new thread..."></textarea>

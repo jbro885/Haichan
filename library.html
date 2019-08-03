@@ -6,9 +6,13 @@
 </script>
 <style>
 .pic {
+  object-fit: contain;
+  width: 400px;
+  height: 200px;
+  margin: auto;
+  border: none;
 }
 .thread {
-    height: 50%;
     float: left;
     overflow: auto;
     width: auto;
@@ -16,7 +20,8 @@
     flex-wrap: wrap;
 }
 button {
-    
+    width: 50%;
+    margin-left: 25%;
 }
 textarea {
   color: black;
@@ -31,7 +36,6 @@ textarea {
   text-align: justify;
   overflow: auto;
   box-sizing: border-box;
-  border-radius: 10px;
   display: none;
 }
 </style>

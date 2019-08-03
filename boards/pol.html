@@ -159,7 +159,7 @@ fetch(url, header).then(function(r) {
           "limit": 100,
         },
         "r": {
-			"f": "[ .[] | {replytxid: .tx.h, replystamp: .blk.t?, replytxt: .out[0].s4, replyimg: .out[0].s5, replyto: .out[0].s6 }]"
+          "f": "[ .[] | { replyp: .in[0].e.a?, replytxid: .tx.h?, replystamp: .blk.t?, replytxt: .out[0].s4, replyimg: .out[0].s5, replyto: .out[0].s6 }]"
         }
       }
       var b64 = btoa(JSON.stringify(replies));
@@ -172,6 +172,7 @@ fetch(url, header).then(function(r) {
       }).then(function(r) {
         let res = r.u.concat(r.c)
         res.forEach(function(output) {
+          var replyp = output.replyp;
           replyto = output.replyto;
           replytxt = output.replytxt;
           replytxid = output.replytxid;
@@ -185,7 +186,11 @@ fetch(url, header).then(function(r) {
           reply.setAttribute("class", "reply");
           reply.innerHTML =
           "<br />" +
-          "<img src=" + `${replyurl}` + " class=replypic></img>" +
+          "<img src=" + `${replyurl}` + " class=replypic></img>" 
+          + "<button id=replytip" + replyp +" class=replytip>Tip</button>" +
+          "<br />" +
+          "<div id=replytipsubmit" + replyp + " class='hidden'>" + "</div>" +
+          "<button id=replytipclose" + replyp + " class='hidden'>Close</button>" +
           "<br />" +
           "<p class=replytext>" +
           replytxt +
@@ -194,6 +199,20 @@ fetch(url, header).then(function(r) {
           "<br />"  +
           "<hr />" ;
           thread.appendChild(reply);
+          thread.querySelector("#replytip" + replyp).addEventListener("click", function(e) {
+          thread.querySelector("#replytipsubmit" + replyp).classList.remove('hidden')
+          thread.querySelector("#replytipclose" + replyp).classList.remove('hidden')
+            const div = document.getElementById("replytipsubmit" + replyp);   
+          moneyButton.render(div, {
+            to: replyp,
+            amount: "0.01",
+            currency: "USD"
+          })
+        });
+        thread.querySelector("#replytipclose" + replyp).addEventListener("click", function(e) {
+          thread.querySelector("#replytipsubmit" + replyp).classList.add('hidden')
+          thread.querySelector("#replytipclose" + replyp).classList.add('hidden')
+        })
       })
     })
   })
