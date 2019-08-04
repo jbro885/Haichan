@@ -180,8 +180,10 @@ fetch(url, header).then(function(r) {
           replyimg.setAttribute('class', 'replyimg');
           var replyurl = "https://bico.media/" + output.replyimg
           replyimg.setAttribute("src", `${url}`);
-          console.log(replytxt + "//             " + replytxid + "//    " + "is a reply to   " + replyto);
           var replyto = document.getElementById(`${replyto}`);
+          var replytext = document.createTextNode(`${output.replytxt}`);
+          
+          console.log(replytext);
           var reply = document.createElement("div");
           reply.setAttribute("class", "reply");
           reply.innerHTML =
@@ -192,13 +194,13 @@ fetch(url, header).then(function(r) {
           "<div id=replytipsubmit" + replyp + " class='hidden'>" + "</div>" +
           "<button id=replytipclose" + replyp + " class='hidden'>Close</button>" +
           "<br />" +
-          "<p class=replytext>" +
-          replytxt +
+          "<p id=replytext" + replyp + " class='text'>" +
           "</p>" +
           "<br />" +
           "<br />"  +
           "<hr />" ;
           thread.appendChild(reply);
+          thread.querySelector("#replytext" + replyp).appendChild(replytext);
           thread.querySelector("#replytip" + replyp).addEventListener("click", function(e) {
           thread.querySelector("#replytipsubmit" + replyp).classList.remove('hidden')
           thread.querySelector("#replytipclose" + replyp).classList.remove('hidden')

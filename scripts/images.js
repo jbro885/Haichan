@@ -3,12 +3,12 @@ var threads = {
   "v": 3,
   "q": {
     "find": {
-    "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje"
+    "out.s1": "1Gd8GkWg1XTFJyjfeF1vuyzdSBM578kmDh"
      },
-    "limit": 150,
+    "limit": 20,
   },
   "r": {
-    "f": "[ .[] | { txid: .tx.h, img: .out[0].s5 }]"
+    "f": "[ .[] | { txid: .tx.h, img: .out[0].s4 }]"
   }
 }
 
@@ -27,35 +27,33 @@ fetch(url, header).then(function(r) {
   res.forEach(function(output) {
 
     var threadid = output.txid;
-    var content = output.txt;
     var imglink = output.img;
 
     console.log(`txid is ${threadid} `);
-    console.log(`message is ${content}`);
 
     var thread = document.createElement("div");
     thread.id = (`${threadid}`);
     thread.setAttribute('class', 'thread');
    // image
     var img = document.createElement('img');
-    var url = "https://bico.media/" + output.img
+    var url = "https://bico.media/" + output.img;
     img.setAttribute("src", `${url}`);
     console.log(`url is ${url}`);
 
   //
     thread.innerHTML =
     "<img src=" + `${url}` + " class=pic></img>"
-    + "<textarea id=imglink" + output.txid + ">"
-    + output.img + "</textarea>" +
+    + "<textarea id=imglink" + threadid + ">"
+    + imglink + "</textarea>" +
     "<br />" +
-    "<br />" + "<button id=imgcopy>Copy</button>";
+    "<br />" + "<button id=imgcopy" + threadid + " >Copy</button>";
     document.body.appendChild(thread);
-    thread.querySelector("#imgcopy").addEventListener("click", function(e) {
-        var copyURL = document.querySelector("#imglink" + output.txid);
+    thread.querySelector("#imgcopy" + threadid).addEventListener("click", function(e) {
+        var copyURL = thread.querySelector("#imglink" + threadid).value;
         console.log(`${copyURL}`);
         copyURL.select();
         document.execCommand("copy");
-        alert("Image link copied!");
+        alert("Image link copied:" + copyURL.value);
     })
 })
 })
