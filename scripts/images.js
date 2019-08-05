@@ -3,12 +3,13 @@ var threads = {
   "v": 3,
   "q": {
     "find": {
-    "out.s1": "1Gd8GkWg1XTFJyjfeF1vuyzdSBM578kmDh"
+      "$text": { "$search": "b://" },
+    "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje"
      },
-    "limit": 20,
+    "limit": 50,
   },
   "r": {
-    "f": "[ .[] | { txid: .tx.h, img: .out[0].s4 }]"
+    "f": "[ .[] | { txid: .tx.h, img: .out[0].s5 }]"
   }
 }
 

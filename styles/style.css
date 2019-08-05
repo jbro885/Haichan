@@ -1,7 +1,8 @@
 body {
     background: rgb(255,255,255);
     background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
-}
+    font-family: arial,helvetica,sans-serif
+  }
 h1 {
   color: green;
   text-align: center;
@@ -26,19 +27,12 @@ h2 {
     -webkit-transition-duration: 0.4s; 
     transition-duration: 0.4s;
   }
-input {
-    width: 200px;
-    height: 30px;
-    border-radius: 3px 3px 3px;
-    margin: 5px;
-    border: 1px solid #ddd;
-    padding: 10px 16px;
-    margin: 8px 0;
-  }
-    input:focus {
-    box-shadow: 0 0 10px 12px rgba(0, 0, 0, 0.2);
-    outline: 0;
-  }
+input:required:invalid:focus {
+    filter: blur(2px);
+   -webkit-filter: blur(2px);
+   border-bottom-color: crimson;
+}
+
   .button1:hover {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
   }
@@ -90,12 +84,12 @@ input {
   background-color: green;
   color: white;
 }
-textarea#newthread {
+input#newthread {
   border-style: solid;
   border-color: black;
   border-radius: 10px;
   color: black;
-  border-width: 2px;
+  border-width: 1px;
   padding-top: 20px;
   padding-right: 75px;
   padding-bottom: 25px;
@@ -122,9 +116,6 @@ input#imglink {
   background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
   margin: 15px 35px 15px;
   text-shadow: 2px 2px 4px #ffffff;
-}
-input#imglink:hover {
-  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
 button {
   border-width: 1px;
@@ -171,15 +162,16 @@ button:hover {
   width: 250px;
   height: 187px;
   border-radius: 25px;
+  margin-right: 30px;
 }
 .replypic {
   float: left;
   border-style: solid;
   border-color: darkslategray;
   border-width: 1px;
-  margin: 5px 15px 10px;
+  margin-top: 15px;
+  margin-left: 15px;
   object-fit: cover;
-  margin-left: 5px;
   width: 250px;
   height: 187px;
   border-radius: 25px;
@@ -230,13 +222,17 @@ input#replyimglink {
 }
 input#replyimglink:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+  filter: none;
 }
 p.threadtext {
   text-align: center;
   border: 1px;
   color: black;
   font-size: 20px;
-  font-family: Arial, Helvetica, sans-serif;
+  padding-top: 50px;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin: auto;
 }
 div.op {
   border-style: solid;
@@ -263,7 +259,6 @@ div.reply {
   border-radius: 25px;
 
 }
-
 p.text {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -282,4 +277,6 @@ button.minimize {
   float: right;
   margin-right: 20px;
 }
-
+p.replytext {
+  padding-top: 50px;
+}
