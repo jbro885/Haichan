@@ -6,7 +6,7 @@ var threads = {
       "$text": { "$search": "b://" },
     "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje"
      },
-    "limit": 5,
+    "limit": 50,
   },
   "r": {
     "f": "[ .[] | { txid: .tx.h, img: .out[0].s5 }]"
@@ -26,8 +26,12 @@ fetch(url, header).then(function(r) {
 }).then(function(r) {
   let res = r.u.concat(r.c)
   res.forEach(function(output) {
+
     var threadid = output.txid;
     var imglink = output.img;
+
+    console.log(`txid is ${threadid} `);
+
     var image = document.createElement("div");
     image.id = (`${threadid}`);
     image.setAttribute('class', 'library');
@@ -35,27 +39,24 @@ fetch(url, header).then(function(r) {
     var img = document.createElement('img');
     var url = "https://bico.media/" + output.img;
     img.setAttribute("src", `${url}`);
-     //
+    console.log(`url is ${url}`);
+
+  //
     image.innerHTML =
     "<img src=" + `${url}` + " class=libimg></img>"
-    + "<textarea id=imglink" + threadid + " style='position:absolute;left:-1000px;top:-1000px;'>"
+    + "<textarea id=imglink" + threadid + ">"
     + imglink + "</textarea>" +
     "<br />" +
-    "<br />" + "<button id=imgcopy" + threadid + ">Copy</button>"
+    "<br />" + "<button id=imgcopy" + threadid + " >Copy</button>"
     + "</div>";
     document.body.appendChild(image);
- })
- image.addEventListener('DOMContentLoaded', (event) => {
-	console.log('DOM fully loaded and parsed');
-	var textarea = image.getElementById("imglink" + threadid).value;
-    console.log(textarea)
-    var button = image.getElementById("imgcopy" + threadid);
-    button.addEventListener("click", function (event) {
-      event.preventDefault();
-      textarea.select();
-      image.execCommand("copy");
+    image.querySelector("#imgcopy" + threadid).addEventListener("click", function(e) {
+        var copyURL = image.querySelector("#imglink" + threadid);
+        console.log(`${copyURL}`);
+        copyURL.select();
+        document.execCommand("copy");
+        alert("Image link copied: (" +  copyURL.value + ")");
     })
-});
 })
-
+})
 

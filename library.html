@@ -1,44 +1,67 @@
 <html>
 <head>
-<link href="styles/style.css" rel="stylesheet" type="text/css" />
-<script src="scripts/images.js"></script>
+<link href="styles/libstyle.css" rel="stylesheet" type="text/css" />
 <script>
+	// fetch from genesis
+var threads = {
+  "v": 3,
+  "q": {
+    "find": {
+      "$text": { "$search": "b://" },
+    "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje"
+     },
+    "limit": 700,
+  },
+  "r": {
+    "f": "[ .[] | { txid: .tx.h, img: .out[0].s5 }]"
+  }
+}
+
+// parse it
+var b64 = btoa(JSON.stringify(threads));
+var url = "https://genesis.bitdb.network/q/1FnauZ9aUH2Bex6JzdcV4eNX7oLSSEbxtN/" + b64;
+var header = {
+  headers: { key: "14QX7pn5GbipWvNLyDfrdcZLzwvPYJSnhB" }
+};
+//
+fetch(url, header).then(function(r) {
+  return r.json()
+
+}).then(function(r) {
+  let res = r.u.concat(r.c)
+  res.forEach(function(output) {
+    var threadid = output.txid;
+    var imglink = output.img;
+    var image = document.createElement("div");
+    image.id = (`${threadid}`);
+    image.setAttribute('class', 'library');
+   // image
+    var img = document.createElement('img');
+    var url = "https://bico.media/" + output.img;
+    img.setAttribute("src", `${url}`);
+     //
+    image.innerHTML =
+    "<img id=img" + threadid +" src=" + `${url}` + " class=libimg></img>"
+    + "<textarea id=imglink" + threadid + " style='position:absolute;left:-1000px;top:-1000px;'>"
+    + imglink + "</textarea>" +
+    "<br />" +
+    "<br />"
+    + "</div>";
+	document.body.appendChild(image);	
+	// the actual textarea
+	var copytext = document.getElementById("imglink" + threadid).value;
+	var copytextarea = document.getElementById("imglink" + threadid);
+    console.log(copytext)
+	var copybutton = document.getElementById("img" + threadid);
+	console.log("copybutton is:" + copybutton);
+    copybutton.addEventListener("click", function (event) {
+		copytextarea.select();
+		document.execCommand("copy");
+	  alert(copytext + " copied!");
+	})
+})
+});
 </script>
-<style>
-.pic {
-  object-fit: contain;
-  width: 400px;
-  height: 200px;
-  margin: auto;
-  border: none;
-}
-.thread {
-    float: left;
-    overflow: auto;
-    width: auto;
-    padding: 5px;
-    flex-wrap: wrap;
-}
-button {
-    width: 50%;
-    margin-left: 25%;
-}
-textarea {
-  color: black;
-  border-width: 2px;
-  padding-top: 2px;
-  padding-right: 15px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  background: linear-gradient(267deg, rgb(215,114,240,1) 0%, rgba(84,158,14,1) 95%);
-  margin: 55px 25px 15px;
-   font-size: 18px;
-  text-align: justify;
-  overflow: auto;
-  box-sizing: border-box;
-  display: none;
-}
-</style>
 </head>
 <body>
 <center>
@@ -56,6 +79,8 @@ textarea {
 </div>
 	<h1>Image Library 
   </h1>
-	</center>
+  <br />
+  </center>
+  <br />
 </body>
 </html>	
