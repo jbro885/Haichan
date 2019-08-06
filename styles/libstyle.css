@@ -1,7 +1,6 @@
 body {
     background: rgb(255,255,255);
     background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
-    font-family: arial,helvetica,sans-serif;
     display: inline-block;
   }
 h1 {
@@ -46,20 +45,20 @@ h2 {
    background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
  }
  .topnav {
-  opacity: 90;
+  opacity: 100;
   overflow: hidden;
   position: -webkit-sticky; /* Safari */
-  font-family: 'Courier New', Courier, monospace;
   position: sticky;
   top: 0;
   background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
 }
+
 .topnav a {
+  float: left;
   color: #99423a;
   text-align: center;
   padding: 6px 12px;
   text-decoration: none;
-  font-size: 23px;
   cursor: pointer;
   -webkit-transition-duration: 0.4s; /* Safari */
   transition-duration: 0.4s;
@@ -71,7 +70,6 @@ h2 {
 }
 
 .topnav a.active {
-  background: linear-gradient(267deg, rgba(245,245,245,1) 0%, rgba(255,214,140,1) 95%);
-
-  color: green;
+  background-color: green;
+  color: white;
 }

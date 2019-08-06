@@ -6,7 +6,7 @@ h1 {
   color: green;
   text-shadow: black;
   text-align: center;
-  font-size: 88px;
+  font-size: 58px;
   text-shadow: 2px 2px 2px black;
 }
 h2 {
@@ -59,10 +59,10 @@ textarea:required:invalid:focus {
 .topnav {
   opacity: 100;
   overflow: hidden;
-  font-family: 'Courier New', Courier, monospace;
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
+  font-size: 30px;
   background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
 }
 
@@ -72,7 +72,6 @@ textarea:required:invalid:focus {
   text-align: center;
   padding: 6px 12px;
   text-decoration: none;
-  font-size: 23px;
   cursor: pointer;
   -webkit-transition-duration: 0.4s; /* Safari */
   transition-duration: 0.4s;
@@ -358,7 +357,4 @@ div#replyop.replybox {
   object-fit: cover;
   width: 250px;
   height: 187px;
-}
-.replytext {
-  font-size: 15px;
 }
