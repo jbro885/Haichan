@@ -11,6 +11,30 @@
 	<link href="../styles/style.css" rel="stylesheet" type="text/css" />
 
 <script>
+var n = {
+  "$nin": [
+      "27a45e9fbef1ac261d46a8b8edd89a2c5c2c2a6fce86f770425832e8d7377b31",
+      "8d333d53fab7f5f327f885177e0eea323bf9bcdc0547a3a6983fec1deb34d0f4",
+      "3b9e1eb8f67b1ac587a656ab11a9b52c26784c3ded9bd859cf702c517dbab642",
+      "81080aa2d2dd0a72d93f4e6b4dec431946cd88fd0697d3aa32ccf124c5d346c8",
+      "1f468e3f5e0635c3c2f7c820a4dd83c800c876c424cccbf89b1d0456c4ecc732",
+      "7165cffbe9f17840ae1f5b105be93c7b42df4c43081229f3462f26842b7b3127",
+      "98565893fa4ab38557f84fac633243c006c469fb2046e6c64e617c27066c890e",
+      "4aa8d823d724c4c184843126b4d22149bd0124f7c74d02ae4b74342365102cbc",
+      "4e1c5a0c7073c7bb833fc120c476c473f8e3c0a09b2823461d24d54bb510f796",
+      "fdebf53c0b7f1377d2fcbfa9a6483bbdc4081fb552bb868513ad35eb7ad2b553",
+      "09e91d4d1dda803dab1aa0144f67da3c0c6f0e5af514aaeb1a188ec95b32d9ec",
+      "6543c5c068095d7cae1d3c78cbfc9896158ab48a6133b5fc210939858c1c6431",
+      "103b0d2d39b1fd8465d38fa1069316e6c745d9658f90158af80af5aaf0561882",
+      "01b4515503066731c0665f160e4c9869575de0f08d3190b2d9d9d592456a863e",
+      "8d31be10ddca10b6f166415c1d4a9c75aae574930f9f193e8f313670cc534525",
+      "16ea1ab8c28a9cee95163bafd87f77349cfa39826eb4aa549de48987122678b7",
+      "de773a423d27f49f1fff120a66fc80a93ff4c6d125f31de8fac5e802db164db8",
+      "3262e4f5e429d8c46860500e552d11f7a1fdc58ca8135536b802c8017ff1d42e",
+      "f17ebfcc02f9e815db086baf6ff8ff72d758934a4ef2073ddcc3ad954c05214a",
+      "72fbcb51022deda042fd495257ff090677ad10613e09a3c9e2268446a038e8b8"
+  ]
+}
 var threads = {
   "v": 3,
   "q": {
@@ -20,17 +44,21 @@ var threads = {
 	"out.s2": "/mu/",
   "out.s3": "THREAD",
   "out.s5": {"$regex": "b://.*"},
-  "out.s4": {"$regex": "" }  
+  "out.s4": {"$regex": "" },
+  "tx.h": n
      },
-    "limit": 20,
+    "sort": {
+      "blk.i": -1,
+      "i": -1
+    },
+    "limit": 200
   },
   "r": {
     "f": "[ .[] | { op: .in[0].e.a?, txid: .tx.h, timestamp: .blk.t?, txt: .out[0]?.s4, img: .out[0].s5 }]"
   }
 }
 var b64 = btoa(JSON.stringify(threads));
-
-var url = "https://genesis.bitdb.network/q/1FnauZ9aUH2Bex6JzdcV4eNX7oLSSEbxtN/" + b64;
+var url = "https://neongenesis.bitdb.network/q/1HcBPzWoKDL2FhCMbocQmLuFTYsiD73u1j/" + b64;
 var header = {
   headers: { key: "14QX7pn5GbipWvNLyDfrdcZLzwvPYJSnhB" }
 };
@@ -159,7 +187,7 @@ fetch(url, header).then(function(r) {
         label: "",
         $pay: {
           to: [{
-            address: "1LWQtHNozJ9Ffjehi869FKt3guXnRg3FZB",
+            address: "haichan@moneybutton.com",
             value: 5000
           },
         { 
@@ -314,7 +342,7 @@ document.addEventListener("DOMContentLoaded", function() {
         label: "",
         $pay: {
           to: [{
-            address: "1LWQtHNozJ9Ffjehi869FKt3guXnRg3FZB",
+            address: "haichan@moneybutton.com",
             value: 5000
           },
         {
