@@ -8,7 +8,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link href="/manifest.json" rel="manifest" /><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff">
 	<title>Haichan: A Peer-to-Peer Electronic Image Board</title>
-	<link href="../styles/dark.css" rel="stylesheet" type="text/css" />
+	<link href="../styles/style.css" rel="stylesheet" type="text/css" />
 
 <script>
 var n = {
@@ -50,7 +50,7 @@ var threads = {
       "blk.i": -1,
       "i": -1
     },
-    "limit": 200
+    "limit": 100,
   },
   "r": {
     "f": "[ .[] | { op: .in[0].e.a?, txid: .tx.h, timestamp: .blk.t?, txt: .out[0]?.s4, img: .out[0].s5 }]"
@@ -84,7 +84,7 @@ fetch(url, header).then(function(r) {
     + "<button id=tipop" 
     + threadid + " class='tipop'>Tip" 
     // minimize thread
-    //+ "<button class=minimize>[-]</button>" 
+    + "<button id=minimize" + threadid + " class='minimize'>[-]</button>" 
     + "<br />" +
     "<div id=optipsubmit" + threadid + " class='hidden'>" +
       "<div id=optipbutton" + threadid + " class='hidden'></div>" + "</div>"
@@ -148,6 +148,9 @@ fetch(url, header).then(function(r) {
     thread.querySelector("#optipclose" + threadid).classList.remove('hidden')
     thread.querySelector("#optipsubmit" + threadid).classList.remove('hidden')
   });
+  thread.querySelector("#minimize" + threadid).addEventListener("click", function(e) {
+        thread.classList.add('hidden')
+    });
   thread.querySelector("#optipclose" + threadid).addEventListener("click", function(e) {
     thread.querySelector("#optipbutton" + threadid).classList.add('hidden')
     thread.querySelector("#optipclose" + threadid).classList.add('hidden')
@@ -233,13 +236,13 @@ fetch(url, header).then(function(r) {
           "tx.h": n
           },
               "sort": {
-      "blk.i": -1,
-      "i": -1
+      "blk.i": 1,
+      "i": 1
   },
           "limit": 100,
         },
         "r": {
-          "f": "[ .[] | { replyp: .in[0].e.a?, replytxid: .tx.h, replystamp: .blk.t?, replytxt: .out[0].s4, replyimg: .out[0].s5, replyto: .out[0].s6 }]"
+          "f": "[ group_by(.blk.t)[] | .[] | { replyp: .in[0].e.a?, replytxid: .tx.h, replystamp: .blk.t?, replytxt: .out[0].s4, replyimg: .out[0].s5, replyto: .out[0].s6 }]"
         }
       }
       var b64 = btoa(JSON.stringify(replies));
@@ -408,6 +411,5 @@ document.addEventListener("DOMContentLoaded", function() {
           </div>
   </button>
 </center>
-<h2><span style="font-family:courier new,courier,monospace;">Threads:</span></h2>
 </body>
 </html>

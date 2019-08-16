@@ -84,7 +84,7 @@ fetch(url, header).then(function(r) {
     + "<button id=tipop" 
     + threadid + " class='tipop'>Tip" 
     // minimize thread
-    //+ "<button class=minimize>[-]</button>" 
+    + "<button id=minimize" + threadid + " class='minimize'>[-]</button>" 
     + "<br />" +
     "<div id=optipsubmit" + threadid + " class='hidden'>" +
       "<div id=optipbutton" + threadid + " class='hidden'></div>" + "</div>"
@@ -117,13 +117,6 @@ fetch(url, header).then(function(r) {
       "</center>";
     document.body.appendChild(thread);
     thread.querySelector("#optext" + threadid).appendChild(threadtext);
-
-    //
-    //
-    //
-    //
-    //
-    //
     thread.querySelector("#openreply").addEventListener("click", function(e) {
       thread.querySelector("#replyform").classList.remove('hidden')
       thread.querySelector("#replyop").classList.remove('hidden')
@@ -150,7 +143,31 @@ fetch(url, header).then(function(r) {
         thread.querySelector("#openreply").classList.remove('hidden')
         thread.querySelector("#closereply").classList.add('hidden')
         thread.querySelector("#replyop").classList.add('hidden')
+    });
+    thread.querySelector("#tipop" + threadid).addEventListener("click", function(e) {
+    thread.querySelector("#optipclose" + threadid).classList.remove('hidden')
+    thread.querySelector("#optipsubmit" + threadid).classList.remove('hidden')
+  });
+  thread.querySelector("#minimize" + threadid).addEventListener("click", function(e) {
+        thread.classList.add('hidden')
+    });
+  thread.querySelector("#optipclose" + threadid).addEventListener("click", function(e) {
+    thread.querySelector("#optipbutton" + threadid).classList.add('hidden')
+    thread.querySelector("#optipclose" + threadid).classList.add('hidden')
+    thread.querySelector("#optipclose" + threadid).classList.remove('submitclose')
+    thread.querySelector("#optipsubmit" + threadid).classList.add('hidden')
+  });
+  thread.querySelector("#tipop" + threadid).addEventListener("click", function(e) {
+    thread.querySelector("#optipbutton" + threadid).classList.remove('hidden')
+    thread.querySelector("#optipsubmit" + threadid).classList.add('submitclose')
+    thread.querySelector("#optipclose" + threadid).classList.add('submitclose')
+    const div = document.getElementById("optipbutton" + threadid);   
+    moneyButton.render(div, {
+      to: op,
+      amount: "0.01",
+      currency: "USD"
     })
+  });
     thread.querySelector("#replydone" + threadid).addEventListener("click", function(e) {
     var btip = thread.querySelector("#replyimglink").value;
     console.log("btip is:" + btip);
@@ -181,7 +198,7 @@ fetch(url, header).then(function(r) {
         res.forEach(function(output) {
           var tipaddr = output.addr;
       databutton.build({
-      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/mu/", "REPLY", thread.querySelector("#replyform").value, thread.querySelector("#replyimglink").value, threadid],
+      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/a/", "REPLY", thread.querySelector("#replyform").value, thread.querySelector("#replyimglink").value, threadid],
       button: {
         $el: "#replybutton" + threadid,
         label: "",
@@ -205,29 +222,8 @@ fetch(url, header).then(function(r) {
       }
     })
   })
-});
-  thread.querySelector("#tipop" + threadid).addEventListener("click", function(e) {
-    thread.querySelector("#optipclose" + threadid).classList.remove('hidden')
-    thread.querySelector("#optipsubmit" + threadid).classList.remove('hidden')
-  });
-  thread.querySelector("#optipclose" + threadid).addEventListener("click", function(e) {
-    thread.querySelector("#optipbutton" + threadid).classList.add('hidden')
-    thread.querySelector("#optipclose" + threadid).classList.add('hidden')
-    thread.querySelector("#optipclose" + threadid).classList.remove('submitclose')
-    thread.querySelector("#optipsubmit" + threadid).classList.add('hidden')
-  });
-  thread.querySelector("#tipop" + threadid).addEventListener("click", function(e) {
-    thread.querySelector("#optipbutton" + threadid).classList.remove('hidden')
-    thread.querySelector("#optipsubmit" + threadid).classList.add('submitclose')
-    thread.querySelector("#optipclose" + threadid).classList.add('submitclose')
-    const div = document.getElementById("optipbutton" + threadid);   
-    moneyButton.render(div, {
-      to: op,
-      amount: "0.01",
-      currency: "USD"
-    })
-  })
 })
+});
       var replies = {
         "v": 3,
         "q": {
@@ -409,6 +405,5 @@ document.addEventListener("DOMContentLoaded", function() {
           </div>
   </button>
 </center>
-<h2><span style="font-family:courier new,courier,monospace;">Threads:</span></h2>
 </body>
 </html>

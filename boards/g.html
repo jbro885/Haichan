@@ -84,7 +84,7 @@ fetch(url, header).then(function(r) {
     + "<button id=tipop" 
     + threadid + " class='tipop'>Tip" 
     // minimize thread
-    //+ "<button class=minimize>[-]</button>" 
+    + "<button id=minimize" + threadid + " class='minimize'>[-]</button>" 
     + "<br />" +
     "<div id=optipsubmit" + threadid + " class='hidden'>" +
       "<div id=optipbutton" + threadid + " class='hidden'></div>" + "</div>"
@@ -117,13 +117,6 @@ fetch(url, header).then(function(r) {
       "</center>";
     document.body.appendChild(thread);
     thread.querySelector("#optext" + threadid).appendChild(threadtext);
-
-    //
-    //
-    //
-    //
-    //
-    //
     thread.querySelector("#openreply").addEventListener("click", function(e) {
       thread.querySelector("#replyform").classList.remove('hidden')
       thread.querySelector("#replyop").classList.remove('hidden')
@@ -155,6 +148,9 @@ fetch(url, header).then(function(r) {
     thread.querySelector("#optipclose" + threadid).classList.remove('hidden')
     thread.querySelector("#optipsubmit" + threadid).classList.remove('hidden')
   });
+  thread.querySelector("#minimize" + threadid).addEventListener("click", function(e) {
+        thread.classList.add('hidden')
+    });
   thread.querySelector("#optipclose" + threadid).addEventListener("click", function(e) {
     thread.querySelector("#optipbutton" + threadid).classList.add('hidden')
     thread.querySelector("#optipclose" + threadid).classList.add('hidden')
@@ -409,6 +405,5 @@ document.addEventListener("DOMContentLoaded", function() {
           </div>
   </button>
 </center>
-<h2><span style="font-family:courier new,courier,monospace;">Threads:</span></h2>
 </body>
 </html>
