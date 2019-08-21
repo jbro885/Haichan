@@ -2,7 +2,10 @@
 <html>
 <head>
   <script src="https://www.moneybutton.com/moneybutton.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">
+  $(document).ready(function() {
+      $("#form").validate();
+  </script>
 	<script src='https://unpkg.com/datapay'></script>
 	<script src='https://unpkg.com/databutton'></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -54,8 +57,7 @@ var threads = {
     "limit": 100,
   },
   "r": {
-    "f": "[ .[] | { op: .in[0].e.a?, txid: .tx.h, timestamp: .blk.t?, txt: .out[0]?.s4, img: .out[0].s5 }]"
-  }
+    "f": "[ .[] | { poster: .in[0].e.a?, txid: .tx.h, timestamp: .blk.t?, txt: .out[0]?.s4, img: .out[0].s5, replyto: .out[0].s6, subject: .out[0].s7 }]"  }
 }
 var b64 = btoa(JSON.stringify(threads));
 
@@ -66,10 +68,14 @@ var header = {
 fetch(url, header).then(function(r) {
   return r.json()
 }).then(function(r) {
-  let res = r.u.concat(r.c)
+  let res = r.c.concat(r.u)
   res.forEach(function(output) {
     var threadid = output.txid;
     var content = output.txt;
+    if (content == null) {
+		content = "jinxy";
+		console.log(content);
+	}
     var op = output.op;
     var opimg = output.img;
     var threadtext = document.createTextNode(`${output.txt}`);
@@ -80,13 +86,15 @@ fetch(url, header).then(function(r) {
     var img = document.createElement('img');
     var url = "https://bico.media/" + output.img + ".png"
     var txurl = "https://whatsonchain.com/tx/" + output.txid;
+    var subject = output.subject;
     thread.innerHTML =
     "<button id=openreply>Reply</button>" + "<button id=seetx>Tx</button>"
     + "<button id=tipop" 
     + threadid + " class='tipop'>Tip" 
     // minimize thread
-    + "<button id=minimize" + threadid + " class='minimize'>[-]</button>" 
-    + "<br />" +
+    + "<button id=minimize" + threadid + " class='minimize'>[-]</button>" +
+    //"<p id=opsubject" + threadid + " class='opsub'>" + subject + " </p>"
+    "<br />" +
     "<div id=optipsubmit" + threadid + " class='hidden'>" +
       "<div id=optipbutton" + threadid + " class='hidden'></div>" + "</div>"
       + "</button>" +
@@ -117,6 +125,9 @@ fetch(url, header).then(function(r) {
           "</div>" +
       "</center>";
     document.body.appendChild(thread);
+    $("#optext" + threadid).ready(function() {
+		$("p.threadtext:contains(>)").css("color", "green");
+	});
     thread.querySelector("#optext" + threadid).appendChild(threadtext);
     thread.querySelector("#openreply").addEventListener("click", function(e) {
       thread.querySelector("#replyform").classList.remove('hidden')
@@ -281,7 +292,9 @@ fetch(url, header).then(function(r) {
           "</p>" +
           "</p>";
           thread.appendChild(reply);
-
+    $("#replytext" + threadid).ready(function() {
+		$("p.replytext:contains(>)").css("color", "green");
+	});
           thread.querySelector("#replytext" + replytxid).appendChild(replytext);
           thread.querySelector("#replytip" + replyp).addEventListener("click", function(e) {
           thread.querySelector("#replytipsubmit" + replyp).classList.remove('hidden')
@@ -305,11 +318,12 @@ fetch(url, header).then(function(r) {
   })
 })
 })
+
 </script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 	document.querySelector("#done").addEventListener("click", function(e) {
-    document.querySelector("#submit").classList.remove('hidden')
+        document.querySelector("#submit").classList.remove('hidden')
     var btip = document.querySelector("#imglink").value;
     console.log("btip is:" + btip);
     var tip = btip.replace("b://", '');
@@ -346,11 +360,11 @@ document.addEventListener("DOMContentLoaded", function() {
         $pay: {
           to: [{
             address: "haichan@moneybutton.com",
-            value: 600
+            value: 5000
           },
         {
           address: tipaddr,
-          value: 1200 
+          value: 900 
         }],
         },
         onPayment: function(e) {
@@ -382,36 +396,32 @@ document.addEventListener("DOMContentLoaded", function() {
 <a class="active" href="/boards/test.html">/test/</a></div>
 <h1 class="glow"><span>/test/</span></h1>
 <center>
-<form>
-    <textarea id="newthread" placeholder="Post a new thread..." required minlength="1"></textarea>
-    <br />
-		<input id="imglink" placeholder="b:// image link" required minlength="68" required maxlength="68" required maxlength="68" required pattern="b://.{64}"></textarea>
-    
-    <script>
-        (function() {
-          $('form > input').keyup(function() {
-        
-            var empty = false;
-            $('form > input').each(function() {
-              if ($(this).val() == '') {
-                empty = true;
-              }
-            });
-        
-            if (empty) {
-              $('#done').attr('disabled', 'disabled');
-            } else {
-              $('#done').removeAttr('disabled');
-            }
-          });
-        })()
-        </script>
-  </form>
-  <button id="done" href="#" class="post" disabled="disabled">Post
-      <div id='submit' class='hidden'>
-          <div id='button'></div>
+<form id="newthread">
+	
+    <p>
+      <textarea id="newthread" name="name" minlength="1" type="text"
+     oninvalid="this.setCustomValidity('Posts can not be empty!')"
+      onchange="try{setCustomValidity('')}catch(e){}"
+       required></textarea>
+    </p>
+    <p>
+      <input id="imglink" 
+      placeholder="b:// image link" 
+      required maxlength="68" 
+      oninvalid="this.setCustomValidity('Please use a b:// image link!')"
+      onchange="try{setCustomValidity('')}catch(e){}"
+      required pattern="b://.{64}"
+      name="imglink" required>
+    </p>
+    <p>
+      <button id="done"  class="post" type="button" value="Post">Post
+      <div id="submit" class='hidden'>
+          <div id="button"></div>
           </div>
-  </button>
+          </button>
+    </p>
+</form>
+
 </center>
 </body>
 </html>

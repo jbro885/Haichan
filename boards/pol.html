@@ -64,7 +64,7 @@ var header = {
 fetch(url, header).then(function(r) {
   return r.json()
 }).then(function(r) {
-  let res = r.u.concat(r.c)
+  let res = r.c.concat(r.u)
   res.forEach(function(output) {
     var threadid = output.txid;
     var content = output.txt;
@@ -115,6 +115,9 @@ fetch(url, header).then(function(r) {
           "</div>" +
       "</center>";
     document.body.appendChild(thread);
+                $("#optext" + threadid).ready(function() {
+		$("p.threadtext:contains(>)").css("color", "green");
+	});
     thread.querySelector("#optext" + threadid).appendChild(threadtext);
     thread.querySelector("#openreply").addEventListener("click", function(e) {
       thread.querySelector("#replyform").classList.remove('hidden')
@@ -274,6 +277,9 @@ fetch(url, header).then(function(r) {
           "</p>" +
           "</p>";
           thread.appendChild(reply);
+                    	    $("#replytext" + threadid).ready(function() {
+		$("p.replytext:contains(>)").css("color", "green");
+	});
           thread.querySelector("#replytext" + replytxid).appendChild(replytext);
           thread.querySelector("#replytip" + replyp).addEventListener("click", function(e) {
           thread.querySelector("#replytipsubmit" + replyp).classList.remove('hidden')
@@ -374,11 +380,16 @@ document.addEventListener("DOMContentLoaded", function() {
 <form>
     <textarea id="newthread" placeholder="Post a new thread..." required minlength="1"></textarea>
     <br />
-		<input id="imglink" placeholder="b:// image link" required minlength="68" required maxlength="68" required maxlength="68" required pattern="b://.{64}"></textarea>
+		<input id="imglink" placeholder="b:// image link" required minlength="68" required maxlength="68" required maxlength="68" required pattern="b://.{64}"></input>
     
     <script>
         (function() {
           $('form > input').keyup(function() {
+			  $('form > textarea').each(function() {
+				  if ($(this).val() == '') {
+					  empty = true;
+				  }
+			  });
         
             var empty = false;
             $('form > input').each(function() {
@@ -394,7 +405,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
           });
         })()
-        </script>
+        </script>    
   </form>
   <button id="done" href="#" class="post" disabled="disabled">Post
       <div id='submit' class='hidden'>

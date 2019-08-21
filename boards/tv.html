@@ -117,6 +117,9 @@ fetch(url, header).then(function(r) {
           "</div>" +
       "</center>";
     document.body.appendChild(thread);
+                $("#optext" + threadid).ready(function() {
+		$("p.threadtext:contains(>)").css("color", "green");
+	});
     thread.querySelector("#optext" + threadid).appendChild(threadtext);
     thread.querySelector("#openreply").addEventListener("click", function(e) {
       thread.querySelector("#replyform").classList.remove('hidden')
@@ -225,7 +228,7 @@ fetch(url, header).then(function(r) {
   })
 })
 });
-      var replies = {
+var replies = {
         "v": 3,
         "q": {
           "db": ["u","c"],
@@ -233,23 +236,28 @@ fetch(url, header).then(function(r) {
           "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje",
 		  "out.s2": "/tv/",
 		  "out.s3": "REPLY",
-          "out.s6": threadid
+          "out.s6": threadid,
+          "tx.h": n
           },
+              "sort": {
+      "blk.i": 1,
+      "i": 1
+  },
           "limit": 100,
         },
         "r": {
-          "f": "[ .[] | { replyp: .in[0].e.a?, replytxid: .tx.h, replystamp: .blk.t?, replytxt: .out[0].s4, replyimg: .out[0].s5, replyto: .out[0].s6 }]"
+          "f": "[ group_by(.blk.t)[] | .[] | { replyp: .in[0].e.a?, replytxid: .tx.h, replystamp: .blk.t?, replytxt: .out[0].s4, replyimg: .out[0].s5, replyto: .out[0].s6 }]"
         }
-      };
+      }
       var b64 = btoa(JSON.stringify(replies));
-      var url = "https://genesis.bitdb.network/q/1FnauZ9aUH2Bex6JzdcV4eNX7oLSSEbxtN/" + b64;
+      var url = "https://neongenesis.bitdb.network/q/1HcBPzWoKDL2FhCMbocQmLuFTYsiD73u1j/" + b64;
       var header = {
         headers: { key: "14QX7pn5GbipWvNLyDfrdcZLzwvPYJSnhB" }
-      };
+      }
       fetch(url, header).then(function(r) {
         return r.json()
       }).then(function(r) {
-        let res = r.u.concat(r.c)
+        let res = r.c.concat(r.u)
         res.forEach(function(output) {
           var replyp = output.replyp;
           console.log(replyp);
@@ -258,7 +266,7 @@ fetch(url, header).then(function(r) {
           replytxid = output.replytxid;
           var replyimg = document.createElement('img');
           replyimg.setAttribute('class', 'replyimg');
-          var replyurl = "https://bico.media/" + output.replyimg
+          var replyurl = "https://bico.media/" + output.replyimg + ".png"
           replyimg.setAttribute("src", `${url}`);
           var replyto = document.getElementById(`${replyto}`);
           var replytext = document.createTextNode(`${output.replytxt}`);
@@ -275,30 +283,33 @@ fetch(url, header).then(function(r) {
           "<p id=replytext" + replytxid + " class='replytext'>" +
           "</p>" +
           "</p>";
-          thread.appendChild(reply);
+          thread.appendChild(reply);                    	    
+          $("#replytext" + threadid).ready(function() {
+		$("p.replytext:contains(>)").css("color", "green");
+	});
           thread.querySelector("#replytext" + replytxid).appendChild(replytext);
           thread.querySelector("#replytip" + replyp).addEventListener("click", function(e) {
           thread.querySelector("#replytipsubmit" + replyp).classList.remove('hidden')
           thread.querySelector("#replytipbutton" + replyp).classList.remove('hidden')
           thread.querySelector("#replytipsubmit" + replyp).classList.add('submitclose')
           thread.querySelector("#replytipclose" + replyp).classList.remove('hidden')
-            const div = document.getElementById("replytipbutton" + replyp);   
+          const div = document.getElementById("replytipbutton" + replyp);   
           moneyButton.render(div, {
             to: replyp,
             amount: "0.01",
             currency: "USD"
-          })
+          });
         });
         thread.querySelector("#replytipclose" + replyp).addEventListener("click", function(e) {
           thread.querySelector("#replytipsubmit" + replyp).classList.add('hidden')
           thread.querySelector("#replytipsubmit" + replyp).classList.remove('submitclose')
           thread.querySelector("#replytipbutton" + replyp).classList.add('hidden')
           thread.querySelector("#replytipclose" + replyp).classList.add('hidden')
-        })
-      });
-    })
-  });
-});
+        });
+      })
+  })
+})
+})
 </script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -378,11 +389,16 @@ document.addEventListener("DOMContentLoaded", function() {
 <form>
     <textarea id="newthread" placeholder="Post a new thread..." required minlength="1"></textarea>
     <br />
-		<input id="imglink" placeholder="b:// image link" required minlength="68" required maxlength="68" required maxlength="68" required pattern="b://.{64}"></textarea>
+		<input id="imglink" placeholder="b:// image link" required minlength="68" required maxlength="68" required maxlength="68" required pattern="b://.{64}"></input>
     
     <script>
         (function() {
           $('form > input').keyup(function() {
+			  $('form > textarea').each(function() {
+				  if ($(this).val() == '') {
+					  empty = true;
+				  }
+			  });
         
             var empty = false;
             $('form > input').each(function() {
@@ -398,7 +414,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
           });
         })()
-        </script>
+        </script>    
   </form>
   <button id="done" href="#" class="post" disabled="disabled">Post
       <div id='submit' class='hidden'>

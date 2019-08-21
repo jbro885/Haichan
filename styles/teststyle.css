@@ -63,9 +63,8 @@ textarea:required:invalid:focus {
 }
 button.minimize {
     float: right;
-    font-size: 10px;
+    font-size: 16px;
     border-style: none;
-    margin-right: 2%;
 }
 
 textarea#newthread:hover {

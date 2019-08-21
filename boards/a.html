@@ -249,7 +249,7 @@ fetch(url, header).then(function(r) {
       fetch(url, header).then(function(r) {
         return r.json()
       }).then(function(r) {
-        let res = r.u.concat(r.c)
+        let res = r.c.concat(r.u)
         res.forEach(function(output) {
           var replyp = output.replyp;
           console.log(replyp);
@@ -378,11 +378,16 @@ document.addEventListener("DOMContentLoaded", function() {
 <form>
     <textarea id="newthread" placeholder="Post a new thread..." required minlength="1"></textarea>
     <br />
-		<input id="imglink" placeholder="b:// image link" required minlength="68" required maxlength="68" required maxlength="68" required pattern="b://.{64}"></textarea>
+		<input id="imglink" placeholder="b:// image link" required minlength="68" required maxlength="68" required maxlength="68" required pattern="b://.{64}"></input>
     
     <script>
         (function() {
           $('form > input').keyup(function() {
+			  $('form > textarea').each(function() {
+				  if ($(this).val() == '') {
+					  empty = true;
+				  }
+			  });
         
             var empty = false;
             $('form > input').each(function() {
@@ -398,7 +403,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
           });
         })()
-        </script>
+        </script>    
   </form>
   <button id="done" href="#" class="post" disabled="disabled">Post
       <div id='submit' class='hidden'>
