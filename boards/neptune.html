@@ -8,7 +8,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link href="/manifest.json" rel="manifest" /><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff">
 	<title>Haichan: A Peer-to-Peer Electronic Image Board</title>
-	<link href="../styles/style.css" rel="stylesheet" type="text/css" />
+	<link href="../styles/neptunestyle.css" rel="stylesheet" type="text/css" />
 
 <script>
 var n = {
@@ -31,8 +31,7 @@ var n = {
       "16ea1ab8c28a9cee95163bafd87f77349cfa39826eb4aa549de48987122678b7",
       "de773a423d27f49f1fff120a66fc80a93ff4c6d125f31de8fac5e802db164db8",
       "3262e4f5e429d8c46860500e552d11f7a1fdc58ca8135536b802c8017ff1d42e",
-      "f17ebfcc02f9e815db086baf6ff8ff72d758934a4ef2073ddcc3ad954c05214a",
-      "72fbcb51022deda042fd495257ff090677ad10613e09a3c9e2268446a038e8b8"
+      "f17ebfcc02f9e815db086baf6ff8ff72d758934a4ef2073ddcc3ad954c05214a"
   ]
 }
 var threads = {
@@ -41,7 +40,7 @@ var threads = {
     "db": ["u","c"],
     "find": {
     "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje",
-	"out.s2": "/a/",
+	"out.s2": "/neptune/",
   "out.s3": "THREAD",
   "out.s5": {"$regex": "b://.*"},
   "out.s4": {"$regex": "" },
@@ -51,15 +50,15 @@ var threads = {
       "blk.i": -1,
       "i": -1
     },
-    "limit": 200
+    "limit": 100,
   },
   "r": {
     "f": "[ .[] | { op: .in[0].e.a?, txid: .tx.h, timestamp: .blk.t?, txt: .out[0]?.s4, img: .out[0].s5 }]"
   }
 }
 var b64 = btoa(JSON.stringify(threads));
-var url = "https://neongenesis.bitdb.network/q/1HcBPzWoKDL2FhCMbocQmLuFTYsiD73u1j/" + b64;
 
+var url = "https://neongenesis.bitdb.network/q/1HcBPzWoKDL2FhCMbocQmLuFTYsiD73u1j/" + b64;
 var header = {
   headers: { key: "14QX7pn5GbipWvNLyDfrdcZLzwvPYJSnhB" }
 };
@@ -81,19 +80,18 @@ fetch(url, header).then(function(r) {
     var url = "https://bico.media/" + output.img + ".png"
     var txurl = "https://whatsonchain.com/tx/" + output.txid;
     thread.innerHTML =
-    "<button id=openreply>Reply</button>" + "<button id=seetx>Tx</button>"
+    "<button id=minimize" + threadid + " class='minimize'>-</button>" +
+    "<button id=openreply>Reply</button>" 
     + "<button id=tipop" 
-    + threadid + " class='tipop'>Tip" 
-    // minimize thread
-    + "<button id=minimize" + threadid + " class='minimize'>[-]</button>" 
+    + threadid + " class='tipop'>Tip" + "</button>" +
+    "<a id=optx href=" + txurl + ">" + threadid +
+       "</a>" 
+
     + "<br />" +
     "<div id=optipsubmit" + threadid + " class='hidden'>" +
       "<div id=optipbutton" + threadid + " class='hidden'></div>" + "</div>"
-      + "</button>" +
-    "<button id=closetx class='hidden'>Close</button>" +
-    "<br />" + "<button id=optipclose" + threadid +" class='hidden'>Close</button>" +
-    "<a id=optx class='hidden' href=" + txurl + ">txid:  " + txurl + 
-       "</a>" +
+      + 
+    
        "<img src=" + `${url}` + " class=pic></img>" +
     "<div class='op'>" +
       "<p id=optext" + threadid + " class='threadtext'>" +
@@ -117,6 +115,9 @@ fetch(url, header).then(function(r) {
           "</div>" +
       "</center>";
     document.body.appendChild(thread);
+            $("#optext" + threadid).ready(function() {
+		$("p.threadtext:contains(>)").css("color", "yellowgreen");
+	});
     thread.querySelector("#optext" + threadid).appendChild(threadtext);
     thread.querySelector("#openreply").addEventListener("click", function(e) {
       thread.querySelector("#replyform").classList.remove('hidden')
@@ -128,14 +129,6 @@ fetch(url, header).then(function(r) {
         thread.querySelector("#replydone" + threadid).classList.remove('hidden')
         thread.querySelector("#openreply").classList.add('hidden')
     });
-    thread.querySelector("#seetx").addEventListener("click", function(e) {
-      thread.querySelector("#optx").classList.remove('hidden')
-      thread.querySelector("#closetx").classList.remove('hidden')
-    });
-    thread.querySelector("#closetx").addEventListener("click", function(e) {
-      thread.querySelector("#optx").classList.add('hidden')
-      thread.querySelector("#closetx").classList.add('hidden')
-    });
     thread.querySelector("#closereply").addEventListener("click", function(e) {
       thread.querySelector("#replyform").classList.add('hidden')
         thread.querySelector("#replyimglink").classList.add('hidden')
@@ -146,28 +139,21 @@ fetch(url, header).then(function(r) {
         thread.querySelector("#replyop").classList.add('hidden')
     });
     thread.querySelector("#tipop" + threadid).addEventListener("click", function(e) {
-    thread.querySelector("#optipclose" + threadid).classList.remove('hidden')
     thread.querySelector("#optipsubmit" + threadid).classList.remove('hidden')
   });
-  thread.querySelector("#minimize" + threadid).addEventListener("click", function(e) {
+  
+    thread.querySelector("#minimize" + threadid).addEventListener("click", function(e) {
         thread.classList.add('hidden')
     });
-  thread.querySelector("#optipclose" + threadid).addEventListener("click", function(e) {
-    thread.querySelector("#optipbutton" + threadid).classList.add('hidden')
-    thread.querySelector("#optipclose" + threadid).classList.add('hidden')
-    thread.querySelector("#optipclose" + threadid).classList.remove('submitclose')
-    thread.querySelector("#optipsubmit" + threadid).classList.add('hidden')
-  });
   thread.querySelector("#tipop" + threadid).addEventListener("click", function(e) {
     thread.querySelector("#optipbutton" + threadid).classList.remove('hidden')
     thread.querySelector("#optipsubmit" + threadid).classList.add('submitclose')
-    thread.querySelector("#optipclose" + threadid).classList.add('submitclose')
     const div = document.getElementById("optipbutton" + threadid);   
     moneyButton.render(div, {
       to: op,
       amount: "0.01",
       currency: "USD"
-    })
+    });
   });
     thread.querySelector("#replydone" + threadid).addEventListener("click", function(e) {
     var btip = thread.querySelector("#replyimglink").value;
@@ -199,7 +185,7 @@ fetch(url, header).then(function(r) {
         res.forEach(function(output) {
           var tipaddr = output.addr;
       databutton.build({
-      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/a/", "REPLY", thread.querySelector("#replyform").value, thread.querySelector("#replyimglink").value, threadid],
+      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/neptune/", "REPLY", thread.querySelector("#replyform").value, thread.querySelector("#replyimglink").value, threadid],
       button: {
         $el: "#replybutton" + threadid,
         label: "",
@@ -222,43 +208,48 @@ fetch(url, header).then(function(r) {
         }
       }
     })
+    });
   })
-})
-});
-      var replies = {
+  });
+    var replies = {
         "v": 3,
         "q": {
           "db": ["u","c"],
           "find": {
           "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje",
-		  "out.s2": "/a/",
+		  "out.s2": "/neptune/",
 		  "out.s3": "REPLY",
-          "out.s6": threadid
+		    "out.s4": {"$regex": "" },
+          "out.s6": threadid,
+          "tx.h": n
           },
+              "sort": {
+      "blk.i": 1,
+      "i": 1
+  },
           "limit": 100,
         },
         "r": {
-          "f": "[ .[] | { replyp: .in[0].e.a?, replytxid: .tx.h, replystamp: .blk.t?, replytxt: .out[0].s4, replyimg: .out[0].s5, replyto: .out[0].s6 }]"
+          "f": "[ group_by(.blk.t)[] | .[] | { replyp: .in[0].e.a?, replytxid: .tx.h, replystamp: .blk.t?, replytxt: .out[0].s4, replyimg: .out[0].s5, replyto: .out[0].s6 }]"
         }
-      };
+      }
       var b64 = btoa(JSON.stringify(replies));
-      var url = "https://genesis.bitdb.network/q/1FnauZ9aUH2Bex6JzdcV4eNX7oLSSEbxtN/" + b64;
+      var url = "https://neongenesis.bitdb.network/q/1HcBPzWoKDL2FhCMbocQmLuFTYsiD73u1j/" + b64;
       var header = {
         headers: { key: "14QX7pn5GbipWvNLyDfrdcZLzwvPYJSnhB" }
-      };
+      }
       fetch(url, header).then(function(r) {
         return r.json()
       }).then(function(r) {
         let res = r.c.concat(r.u)
         res.forEach(function(output) {
           var replyp = output.replyp;
-          console.log(replyp);
           replyto = output.replyto;
           replytxt = output.replytxt;
           replytxid = output.replytxid;
           var replyimg = document.createElement('img');
           replyimg.setAttribute('class', 'replyimg');
-          var replyurl = "https://bico.media/" + output.replyimg
+          var replyurl = "https://bico.media/" + output.replyimg + ".png"
           replyimg.setAttribute("src", `${url}`);
           var replyto = document.getElementById(`${replyto}`);
           var replytext = document.createTextNode(`${output.replytxt}`);
@@ -276,7 +267,7 @@ fetch(url, header).then(function(r) {
           "</p>" +
           "</p>";
           thread.appendChild(reply);
-          $("#replytext" + threadid).ready(function() {
+	    $("#replytext" + threadid).ready(function() {
 		$("p.replytext:contains(>)").css("color", "yellowgreen");
 	});
           thread.querySelector("#replytext" + replytxid).appendChild(replytext);
@@ -285,32 +276,30 @@ fetch(url, header).then(function(r) {
           thread.querySelector("#replytipbutton" + replyp).classList.remove('hidden')
           thread.querySelector("#replytipsubmit" + replyp).classList.add('submitclose')
           thread.querySelector("#replytipclose" + replyp).classList.remove('hidden')
-            const div = document.getElementById("replytipbutton" + replyp);   
+          const div = document.getElementById("replytipbutton" + replyp);   
           moneyButton.render(div, {
             to: replyp,
             amount: "0.01",
             currency: "USD"
-          })
+          });
         });
         thread.querySelector("#replytipclose" + replyp).addEventListener("click", function(e) {
           thread.querySelector("#replytipsubmit" + replyp).classList.add('hidden')
           thread.querySelector("#replytipsubmit" + replyp).classList.remove('submitclose')
           thread.querySelector("#replytipbutton" + replyp).classList.add('hidden')
           thread.querySelector("#replytipclose" + replyp).classList.add('hidden')
-        })
-      });
-    })
-  });
-});
+        });
+      })
+  })
+})
+})
 </script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 	document.querySelector("#done").addEventListener("click", function(e) {
     document.querySelector("#submit").classList.remove('hidden')
     var btip = document.querySelector("#imglink").value;
-    console.log("btip is:" + btip);
     var tip = btip.replace("b://", '');
-    console.log("btip is:" + tip);
     var bquery = {
         "v": 3,
         "q": {
@@ -336,7 +325,7 @@ document.addEventListener("DOMContentLoaded", function() {
         res.forEach(function(output) {
           var tipaddr = output.addr;
           databutton.build({
-      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/a/", "THREAD", document.querySelector("#newthread").value, document.querySelector("#imglink").value],
+      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/neptune/", "THREAD", document.querySelector("#newthread").value, document.querySelector("#imglink").value],
       button: {
         $el: "#button",
         label: "",
@@ -373,24 +362,19 @@ document.addEventListener("DOMContentLoaded", function() {
 <a href="/boards/biz.html">/biz/</a> 
 <a href="/boards/tv.html">/tv/</a> 
 <a href="/boards/g.html">/g/</a> 
-<a class="active" href="/boards/a.html">/a/</a> 
+<a href="/boards/a.html">/a/</a> 
 <a href="/boards/mu.html">/mu/</a>
 <a href="../library.html">image library</a></div>
-<h1 class="glow"><span>/a/ - Anime</span></h1>
+<h1 class="glow"><span>/neptune/</span></h1>
 <center>
 <form>
     <textarea id="newthread" placeholder="Post a new thread..." required minlength="1"></textarea>
     <br />
-		<input id="imglink" placeholder="b:// image link" required minlength="68" required maxlength="68" required maxlength="68" required pattern="b://.{64}"></input>
+		<input id="imglink" placeholder="b:// image link" oninvalid="this.setCustomValidity('Please use a b:// image link!')" required maxlength="68" required pattern="b://.{64}"></input>
     
-    <script>
+<script>
         (function() {
-          $('form > input').keyup(function() {
-			  $('form > textarea').each(function() {
-				  if ($(this).val() == '') {
-					  empty = true;
-				  }
-			  });
+          $('form > input').on('input', function() {
         
             var empty = false;
             $('form > input').each(function() {
@@ -406,7 +390,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
           });
         })()
-        </script>    
+        </script> 
   </form>
   <button id="done" href="#" class="post" disabled="disabled">Post
       <div id='submit' class='hidden'>

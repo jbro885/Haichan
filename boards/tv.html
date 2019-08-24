@@ -81,19 +81,18 @@ fetch(url, header).then(function(r) {
     var url = "https://bico.media/" + output.img + ".png"
     var txurl = "https://whatsonchain.com/tx/" + output.txid;
     thread.innerHTML =
-    "<button id=openreply>Reply</button>" + "<button id=seetx>Tx</button>"
+    "<button id=minimize" + threadid + " class='minimize'>-</button>" +
+    "<button id=openreply>Reply</button>" 
     + "<button id=tipop" 
-    + threadid + " class='tipop'>Tip" 
-    // minimize thread
-    + "<button id=minimize" + threadid + " class='minimize'>[-]</button>" 
+    + threadid + " class='tipop'>Tip" + "</button>" +
+    "<a id=optx href=" + txurl + ">" + threadid +
+       "</a>" 
+
     + "<br />" +
     "<div id=optipsubmit" + threadid + " class='hidden'>" +
       "<div id=optipbutton" + threadid + " class='hidden'></div>" + "</div>"
-      + "</button>" +
-    "<button id=closetx class='hidden'>Close</button>" +
-    "<br />" + "<button id=optipclose" + threadid +" class='hidden'>Close</button>" +
-    "<a id=optx class='hidden' href=" + txurl + ">txid:  " + txurl + 
-       "</a>" +
+      + 
+    
        "<img src=" + `${url}` + " class=pic></img>" +
     "<div class='op'>" +
       "<p id=optext" + threadid + " class='threadtext'>" +
@@ -117,8 +116,8 @@ fetch(url, header).then(function(r) {
           "</div>" +
       "</center>";
     document.body.appendChild(thread);
-                $("#optext" + threadid).ready(function() {
-		$("p.threadtext:contains(>)").css("color", "green");
+            $("#optext" + threadid).ready(function() {
+		$("p.threadtext:contains(>)").css("color", "yellowgreen");
 	});
     thread.querySelector("#optext" + threadid).appendChild(threadtext);
     thread.querySelector("#openreply").addEventListener("click", function(e) {
@@ -131,14 +130,6 @@ fetch(url, header).then(function(r) {
         thread.querySelector("#replydone" + threadid).classList.remove('hidden')
         thread.querySelector("#openreply").classList.add('hidden')
     });
-    thread.querySelector("#seetx").addEventListener("click", function(e) {
-      thread.querySelector("#optx").classList.remove('hidden')
-      thread.querySelector("#closetx").classList.remove('hidden')
-    });
-    thread.querySelector("#closetx").addEventListener("click", function(e) {
-      thread.querySelector("#optx").classList.add('hidden')
-      thread.querySelector("#closetx").classList.add('hidden')
-    });
     thread.querySelector("#closereply").addEventListener("click", function(e) {
       thread.querySelector("#replyform").classList.add('hidden')
         thread.querySelector("#replyimglink").classList.add('hidden')
@@ -149,28 +140,21 @@ fetch(url, header).then(function(r) {
         thread.querySelector("#replyop").classList.add('hidden')
     });
     thread.querySelector("#tipop" + threadid).addEventListener("click", function(e) {
-    thread.querySelector("#optipclose" + threadid).classList.remove('hidden')
     thread.querySelector("#optipsubmit" + threadid).classList.remove('hidden')
   });
-  thread.querySelector("#minimize" + threadid).addEventListener("click", function(e) {
+  
+    thread.querySelector("#minimize" + threadid).addEventListener("click", function(e) {
         thread.classList.add('hidden')
     });
-  thread.querySelector("#optipclose" + threadid).addEventListener("click", function(e) {
-    thread.querySelector("#optipbutton" + threadid).classList.add('hidden')
-    thread.querySelector("#optipclose" + threadid).classList.add('hidden')
-    thread.querySelector("#optipclose" + threadid).classList.remove('submitclose')
-    thread.querySelector("#optipsubmit" + threadid).classList.add('hidden')
-  });
   thread.querySelector("#tipop" + threadid).addEventListener("click", function(e) {
     thread.querySelector("#optipbutton" + threadid).classList.remove('hidden')
     thread.querySelector("#optipsubmit" + threadid).classList.add('submitclose')
-    thread.querySelector("#optipclose" + threadid).classList.add('submitclose')
     const div = document.getElementById("optipbutton" + threadid);   
     moneyButton.render(div, {
       to: op,
       amount: "0.01",
       currency: "USD"
-    })
+    });
   });
     thread.querySelector("#replydone" + threadid).addEventListener("click", function(e) {
     var btip = thread.querySelector("#replyimglink").value;
@@ -202,14 +186,14 @@ fetch(url, header).then(function(r) {
         res.forEach(function(output) {
           var tipaddr = output.addr;
       databutton.build({
-      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/tv/", "REPLY", thread.querySelector("#replyform").value, thread.querySelector("#replyimglink").value, threadid],
+      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/b/", "REPLY", thread.querySelector("#replyform").value, thread.querySelector("#replyimglink").value, threadid],
       button: {
         $el: "#replybutton" + threadid,
         label: "",
         $pay: {
           to: [{
             address: "haichan@moneybutton.com",
-            value: 3000
+            value: 5000
           },
         { 
           address: tipaddr,
@@ -225,9 +209,9 @@ fetch(url, header).then(function(r) {
         }
       }
     })
+    });
   })
-})
-});
+  });
 var replies = {
         "v": 3,
         "q": {
@@ -285,7 +269,7 @@ var replies = {
           "</p>";
           thread.appendChild(reply);                    	    
           $("#replytext" + threadid).ready(function() {
-		$("p.replytext:contains(>)").css("color", "green");
+		$("p.replytext:contains(>)").css("color", "yellowgreen");
 	});
           thread.querySelector("#replytext" + replytxid).appendChild(replytext);
           thread.querySelector("#replytip" + replyp).addEventListener("click", function(e) {
