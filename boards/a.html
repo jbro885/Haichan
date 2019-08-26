@@ -375,6 +375,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <a href="/boards/g.html">/g/</a> 
 <a class="active" href="/boards/a.html">/a/</a> 
 <a href="/boards/mu.html">/mu/</a>
+<a href="/boards/meta.html">/meta/</a>
 <a href="../library.html">image library</a></div>
 <h1 class="glow"><span>/a/ - Anime</span></h1>
 <center>
@@ -383,14 +384,9 @@ document.addEventListener("DOMContentLoaded", function() {
     <br />
 		<input id="imglink" placeholder="b:// image link" required minlength="68" required maxlength="68" required maxlength="68" required pattern="b://.{64}"></input>
     
-    <script>
+<script>
         (function() {
-          $('form > input').keyup(function() {
-			  $('form > textarea').each(function() {
-				  if ($(this).val() == '') {
-					  empty = true;
-				  }
-			  });
+          $('form > input').on('input', function() {
         
             var empty = false;
             $('form > input').each(function() {
@@ -406,7 +402,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
           });
         })()
-        </script>    
+        </script> 
   </form>
   <button id="done" href="#" class="post" disabled="disabled">Post
       <div id='submit' class='hidden'>

@@ -31,8 +31,7 @@ var n = {
       "16ea1ab8c28a9cee95163bafd87f77349cfa39826eb4aa549de48987122678b7",
       "de773a423d27f49f1fff120a66fc80a93ff4c6d125f31de8fac5e802db164db8",
       "3262e4f5e429d8c46860500e552d11f7a1fdc58ca8135536b802c8017ff1d42e",
-      "f17ebfcc02f9e815db086baf6ff8ff72d758934a4ef2073ddcc3ad954c05214a",
-      "72fbcb51022deda042fd495257ff090677ad10613e09a3c9e2268446a038e8b8"
+      "f17ebfcc02f9e815db086baf6ff8ff72d758934a4ef2073ddcc3ad954c05214a"
   ]
 }
 var threads = {
@@ -41,7 +40,7 @@ var threads = {
     "db": ["u","c"],
     "find": {
     "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje",
-	"out.s2": "/tv/",
+	"out.s2": "/meta/",
   "out.s3": "THREAD",
   "out.s5": {"$regex": "b://.*"},
   "out.s4": {"$regex": "" },
@@ -51,7 +50,7 @@ var threads = {
       "blk.i": -1,
       "i": -1
     },
-    "limit": 200
+    "limit": 100,
   },
   "r": {
     "f": "[ .[] | { op: .in[0].e.a?, txid: .tx.h, timestamp: .blk.t?, txt: .out[0]?.s4, img: .out[0].s5 }]"
@@ -80,8 +79,7 @@ fetch(url, header).then(function(r) {
     var img = document.createElement('img');
     var url = "https://bico.media/" + output.img + ".png"
     var txurl = "https://whatsonchain.com/tx/" + output.txid;
-    thread.innerHTML =
-    "<button id=minimize" + threadid + " class='minimize'>-</button>" +
+    thread.innerHTML =    "<button id=minimize" + threadid + " class='minimize'>-</button>" +
     "<button id=openreply>Reply</button>" 
     + "<button id=tipop" 
     + threadid + " class='tipop'>Tip" + "</button>" +
@@ -186,7 +184,7 @@ fetch(url, header).then(function(r) {
         res.forEach(function(output) {
           var tipaddr = output.addr;
       databutton.build({
-      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/tv/", "REPLY", thread.querySelector("#replyform").value, thread.querySelector("#replyimglink").value, threadid],
+      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/meta/", "REPLY", thread.querySelector("#replyform").value, thread.querySelector("#replyimglink").value, threadid],
       button: {
         $el: "#replybutton" + threadid,
         label: "",
@@ -212,14 +210,15 @@ fetch(url, header).then(function(r) {
     });
   })
   });
-var replies = {
+    var replies = {
         "v": 3,
         "q": {
           "db": ["u","c"],
           "find": {
           "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje",
-		  "out.s2": "/tv/",
+		  "out.s2": "/meta/",
 		  "out.s3": "REPLY",
+		    "out.s4": {"$regex": "" },
           "out.s6": threadid,
           "tx.h": n
           },
@@ -244,7 +243,6 @@ var replies = {
         let res = r.c.concat(r.u)
         res.forEach(function(output) {
           var replyp = output.replyp;
-          console.log(replyp);
           replyto = output.replyto;
           replytxt = output.replytxt;
           replytxid = output.replytxid;
@@ -267,8 +265,8 @@ var replies = {
           "<p id=replytext" + replytxid + " class='replytext'>" +
           "</p>" +
           "</p>";
-          thread.appendChild(reply);                    	    
-          $("#replytext" + threadid).ready(function() {
+          thread.appendChild(reply);
+	    $("#replytext" + threadid).ready(function() {
 		$("p.replytext:contains(>)").css("color", "yellowgreen");
 	});
           thread.querySelector("#replytext" + replytxid).appendChild(replytext);
@@ -300,9 +298,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	document.querySelector("#done").addEventListener("click", function(e) {
     document.querySelector("#submit").classList.remove('hidden')
     var btip = document.querySelector("#imglink").value;
-    console.log("btip is:" + btip);
     var tip = btip.replace("b://", '');
-    console.log("btip is:" + tip);
     var bquery = {
         "v": 3,
         "q": {
@@ -328,13 +324,13 @@ document.addEventListener("DOMContentLoaded", function() {
         res.forEach(function(output) {
           var tipaddr = output.addr;
           databutton.build({
-      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/tv/", "THREAD", document.querySelector("#newthread").value, document.querySelector("#imglink").value],
+      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/meta/", "THREAD", document.querySelector("#newthread").value, document.querySelector("#imglink").value],
       button: {
         $el: "#button",
         label: "",
         $pay: {
           to: [{
-            address: "1LWQtHNozJ9Ffjehi869FKt3guXnRg3FZB",
+            address: "haichan@moneybutton.com",
             value: 5000
           },
         {
@@ -363,20 +359,20 @@ document.addEventListener("DOMContentLoaded", function() {
 <a href="/boards/b.html">/b/</a> 
 <a href="/boards/pol.html">/pol/</a> 
 <a href="/boards/biz.html">/biz/</a> 
-<a class="active" href="/boards/tv.html">/tv/</a> 
+<a href="/boards/tv.html">/tv/</a> 
 <a href="/boards/g.html">/g/</a> 
 <a href="/boards/a.html">/a/</a> 
 <a href="/boards/mu.html">/mu/</a>
-<a href="/boards/meta.html">/meta/</a>
+<a class="active" href="/boards/meta.html">/meta/</a>
 <a href="../library.html">image library</a></div>
-<h1 class="glow"><span>/tv/ - Television & Film</span></h1>
+<h1 class="glow"><span>/meta/</span></h1>
 <center>
 <form>
     <textarea id="newthread" placeholder="Post a new thread..." required minlength="1"></textarea>
     <br />
-		<input id="imglink" placeholder="b:// image link" required minlength="68" required maxlength="68" required maxlength="68" required pattern="b://.{64}"></input>
+		<input id="imglink" placeholder="b:// image link" oninvalid="this.setCustomValidity('Please use a b:// image link!')" required maxlength="68" required pattern="b://.{64}"></input>
     
-    <script>
+<script>
         (function() {
           $('form > input').on('input', function() {
         
