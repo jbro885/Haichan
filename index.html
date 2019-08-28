@@ -1,33 +1,93 @@
 <!DOCTYPE html>
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link href="/apple-icon-57x57.png" rel="apple-touch-icon" sizes="57x57" />
-	<link href="/apple-icon-60x60.png" rel="apple-touch-icon" sizes="60x60" />
-	<link href="/apple-icon-72x72.png" rel="apple-touch-icon" sizes="72x72" />
-	<link href="/apple-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
-	<link href="/apple-icon-114x114.png" rel="apple-touch-icon" sizes="114x114" />
-	<link href="/apple-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
-	<link href="/apple-icon-144x144.png" rel="apple-touch-icon" sizes="144x144" />
-	<link href="/apple-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
-	<link href="/apple-icon-180x180.png" rel="apple-touch-icon" sizes="180x180" />
-	<link href="/android-icon-192x192.png" rel="icon" sizes="192x192" type="image/png" />
-	<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
-	<link href="/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png" />
-	<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png" />
 	<link href="/manifest.json" rel="manifest" /><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff">
 	<title>Haichan: A Peer-to-Peer Electronic Image Board</title>
 	<link href="styles/style.css" rel="stylesheet" type="text/css" />
+<script>
+var n = {
+  "$nin": [
+      "27a45e9fbef1ac261d46a8b8edd89a2c5c2c2a6fce86f770425832e8d7377b31",
+      "8d333d53fab7f5f327f885177e0eea323bf9bcdc0547a3a6983fec1deb34d0f4",
+      "3b9e1eb8f67b1ac587a656ab11a9b52c26784c3ded9bd859cf702c517dbab642",
+      "81080aa2d2dd0a72d93f4e6b4dec431946cd88fd0697d3aa32ccf124c5d346c8",
+      "1f468e3f5e0635c3c2f7c820a4dd83c800c876c424cccbf89b1d0456c4ecc732",
+      "7165cffbe9f17840ae1f5b105be93c7b42df4c43081229f3462f26842b7b3127",
+      "98565893fa4ab38557f84fac633243c006c469fb2046e6c64e617c27066c890e",
+      "4aa8d823d724c4c184843126b4d22149bd0124f7c74d02ae4b74342365102cbc",
+      "4e1c5a0c7073c7bb833fc120c476c473f8e3c0a09b2823461d24d54bb510f796",
+      "fdebf53c0b7f1377d2fcbfa9a6483bbdc4081fb552bb868513ad35eb7ad2b553",
+      "09e91d4d1dda803dab1aa0144f67da3c0c6f0e5af514aaeb1a188ec95b32d9ec",
+      "6543c5c068095d7cae1d3c78cbfc9896158ab48a6133b5fc210939858c1c6431",
+      "103b0d2d39b1fd8465d38fa1069316e6c745d9658f90158af80af5aaf0561882",
+      "01b4515503066731c0665f160e4c9869575de0f08d3190b2d9d9d592456a863e",
+      "8d31be10ddca10b6f166415c1d4a9c75aae574930f9f193e8f313670cc534525",
+      "16ea1ab8c28a9cee95163bafd87f77349cfa39826eb4aa549de48987122678b7",
+      "de773a423d27f49f1fff120a66fc80a93ff4c6d125f31de8fac5e802db164db8",
+      "3262e4f5e429d8c46860500e552d11f7a1fdc58ca8135536b802c8017ff1d42e",
+      "f17ebfcc02f9e815db086baf6ff8ff72d758934a4ef2073ddcc3ad954c05214a"
+  ]
+}
+var threads = {
+  "v": 3,
+  "q": {
+    "db": ["u","c"],
+    "find": {
+    "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje",
+  "tx.h": n
+     },
+    "sort": {
+      "blk.i": -1,
+      "i": -1
+    },
+    "limit": 10,
+  },
+  "r": {
+    "f": "[ .[] | { op: .in[0].e.a?, txid: .tx.h, timestamp: .blk.t?, txt: .out[0]?.s4, img: .out[0].s5, board: .out[0].s2 }]"
+  }
+}
+var b64 = btoa(JSON.stringify(threads));
+
+var url = "https://neongenesis.bitdb.network/q/1HcBPzWoKDL2FhCMbocQmLuFTYsiD73u1j/" + b64;
+var header = {
+  headers: { key: "14QX7pn5GbipWvNLyDfrdcZLzwvPYJSnhB" }
+};
+fetch(url, header).then(function(r) {
+  return r.json()
+}).then(function(r) {
+  let res = r.u.concat(r.c)
+  res.forEach(function(output) {
+  	var txid = output.txid;
+  	var text = output.txt;
+  	var board = output.board;
+  	var boardreplace = board.slice(1, -1);
+  	console.log(boardreplace);
+  	boardurl = "https://haich.us/boards/" + boardreplace + ".html";
+  	var recent = document.createElement("p");
+  	recent.innerHTML = "<a href=" + boardurl + ">" +
+  	  	board + "</a>" +
+  	"<br />" + text;
+  	document.getElementById("recentposts").appendChild(recent);
+  })
+})
+</script>
 <style>
 b {
 	overflow: auto;
 	font-size: 8px;
 }
-div {
-
+div#news {
+	width: 50%;
 }
 p {
-	margin-right: 25%;
-	margin-left: 25%;
+	margin-right: 5%;
+	margin-left: 5%;
+	overflow: hidden;
+	white-space: pre;
+}
+hr {
+	color: black;
+	visibility: visible;
 }
 </style>
 </head>
@@ -37,21 +97,40 @@ p {
 <a class="active" href="index.html">index</a> 
 <a href="about.html">about</a> 
 <a href="boards/b.html">/b/</a> 
-<a href="boards/pol.html">/pol/</a> 
+<a href="boards/pol.html">/pol/</a>
 <a href="boards/biz.html">/biz/</a> 
 <a href="boards/tv.html">/tv/</a> 
 <a href="boards/g.html">/g/</a> 
 <a href="boards/a.html">/a/</a> 
 <a href="boards/mu.html">/mu/</a>
+<a href="/boards/meta.html">/meta/</a>
 <a href="../library.html">image library</a>
 </div>
 <h1 class="glow"><span style="font-family:courier new,courier,monospace;">Haichan</span></h1>
 
 <h2><span style="font-family:courier new,courier,monospace;">A Peer-to-Peer Electronic Image Board</span></h2>
 <br />
+
+<br />
 <br />
 <div id="home">
+
 	<div id="news">
+		<br />
+			<h2>Recent Posts:</h2>
+<p id="recentposts" />
+<hr />
+		<h2>8/24/19:</h2>
+		<i>Added:</i>
+		<p>+/meta/</p>
+		<p>+better newthread form</p>
+		<p>+UI improvements</p>
+		<h2>8/16/19:</h2>
+		<i>Added:</i>
+		<p>+/test/ board</p>
+		<p>+image uploads</p>
+		<p>+Telegram group</p>
+		<br />
 		<h2>8/11/19:</h2>
 		<i>Added:</i>
 		<p>+moderation</p>
@@ -74,9 +153,10 @@ p {
 		<br />
 		<br />
 		<br />
+				<a href = "mailto: j@haich.us">j@haich.us</a>
 	</div>
 	<br />
-		<a href = "mailto: j@haich.us">j@haich.us</a>
+
 		<br />
 		<br />
 

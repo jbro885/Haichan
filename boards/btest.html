@@ -11,7 +11,7 @@
 	<link href="../styles/style.css" rel="stylesheet" type="text/css" />
 
 <script>
-	var render = function (tx, out, type, name, blk) {
+    var render = function (tx, out, type, name, blk) {
   var link = "b://" + tx; 
   document.querySelector("#imglink").value = link;
   var p = document.createElement("div")
@@ -159,6 +159,7 @@
     })
   }
 })
+
 var n = {
   "$nin": [
       "27a45e9fbef1ac261d46a8b8edd89a2c5c2c2a6fce86f770425832e8d7377b31",
@@ -188,7 +189,7 @@ var threads = {
     "db": ["u","c"],
     "find": {
     "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje",
-	"out.s2": "/biz/",
+	"out.s2": "/b/",
   "out.s3": "THREAD",
   "out.s5": {"$regex": "b://.*"},
   "out.s4": {"$regex": "" },
@@ -198,7 +199,7 @@ var threads = {
       "blk.i": -1,
       "i": -1
     },
-    "limit": 100,
+    "limit": 60,
   },
   "r": {
     "f": "[ .[] | { op: .in[0].e.a?, txid: .tx.h, timestamp: .blk.t?, txt: .out[0]?.s4, img: .out[0].s5 }]"
@@ -225,9 +226,10 @@ fetch(url, header).then(function(r) {
     thread.setAttribute('class', 'thread');
     var opid = "replydone" + threadid;
     var img = document.createElement('img');
-    var url = "https://bico.media/" + output.img + ".png"
+    var url = "https://bico.media/" + output.img;
     var txurl = "https://whatsonchain.com/tx/" + output.txid;
-    thread.innerHTML =    "<button id=minimize" + threadid + " class='minimize'>-</button>" +
+    thread.innerHTML =
+    "<button id=minimize" + threadid + " class='minimize'>-</button>" +
     "<button id=openreply>Reply</button>" 
     + "<button id=tipop" 
     + threadid + " class='tipop'>Tip" + "</button>" +
@@ -304,6 +306,9 @@ fetch(url, header).then(function(r) {
   });
     thread.querySelector("#replydone" + threadid).addEventListener("click", function(e) {
     var btip = thread.querySelector("#replyimglink").value;
+    if (btip = "null") {
+        console.log("null");
+    } else {
     console.log("btip is:" + btip);
     var tip = btip.replace("b://", '');
     console.log("btip is:" + tip);
@@ -332,7 +337,7 @@ fetch(url, header).then(function(r) {
         res.forEach(function(output) {
           var tipaddr = output.addr;
       databutton.build({
-      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/biz/", "REPLY", thread.querySelector("#replyform").value, thread.querySelector("#replyimglink").value, threadid],
+      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/b/", "REPLY", thread.querySelector("#replyform").value, ".", threadid],
       button: {
         $el: "#replybutton" + threadid,
         label: "",
@@ -357,14 +362,15 @@ fetch(url, header).then(function(r) {
     })
     });
   })
-  });
+  }
+})
     var replies = {
         "v": 3,
         "q": {
           "db": ["u","c"],
           "find": {
           "out.s1": "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje",
-		  "out.s2": "/biz/",
+		  "out.s2": "/b/",
 		  "out.s3": "REPLY",
 		    "out.s4": {"$regex": "" },
           "out.s6": threadid,
@@ -472,7 +478,7 @@ document.addEventListener("DOMContentLoaded", function() {
         res.forEach(function(output) {
           var tipaddr = output.addr;
           databutton.build({
-      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/biz/", "THREAD", document.querySelector("#newthread").value, document.querySelector("#imglink").value],
+      data: ["1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje", "/b/", "THREAD", document.querySelector("#newthread").value, document.querySelector("#imglink").value],
       button: {
         $el: "#button",
         label: "",
@@ -504,16 +510,16 @@ document.addEventListener("DOMContentLoaded", function() {
 <body>
 <div class="topnav"><a href="../index.html">index</a> 
 <a href="../about.html">about</a> 
-<a href="/boards/b.html">/b/</a> 
+<a class="active" href="/boards/b.html">/b/</a> 
 <a href="/boards/pol.html">/pol/</a> 
-<a class="active" href="/boards/biz.html">/biz/</a> 
+<a href="/boards/biz.html">/biz/</a> 
 <a href="/boards/tv.html">/tv/</a> 
 <a href="/boards/g.html">/g/</a> 
 <a href="/boards/a.html">/a/</a> 
 <a href="/boards/mu.html">/mu/</a>
 <a href="/boards/meta.html">/meta/</a>
 <a href="../library.html">image library</a></div>
-<h1 class="glow"><span>/biz/ - Business & Finance</span></h1>
+<h1 class="glow"><span>/b/ - Random</span></h1>
 <center>
 <form>
     <textarea id="newthread" placeholder="Post a new thread..." required minlength="1"></textarea>
@@ -532,7 +538,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
   <div id='imgbutton'></div>
             </input>
-  </form>
+
+
 </center>
 </body>
 </html>

@@ -11,6 +11,154 @@
 	<link href="../styles/style.css" rel="stylesheet" type="text/css" />
 
 <script>
+	    var render = function (tx, out, type, name, blk) {
+  var link = "b://" + tx; 
+  document.querySelector("#imglink").value = link;
+  var p = document.createElement("div")
+  p.className = 'row'
+  var c = document.querySelector("#container")
+  console.log("tx = ", tx)
+  var share = "<div class='util'></div><br>"
+  console.log("share = ", share)
+  try {
+    if (/image\/.*/.test(type)) {
+      let content = out[0].lb2
+      p.innerHTML = "<img src='https://bico.media/" + tx + "'></img>" + "<br />" + "<br />" + "<br />"
+      c.insertBefore(p, c.firstChild)
+    } else if (/audio\/.*/.test(type)) {
+      let content = out[0].lb2
+      p.innerHTML = "<div class='label'>" + type + " | " + name + link + "</div>" + share + "<audio controls><source src='data:" + type + ";base64," + content + "'></audio>"
+      c.insertBefore(p, c.firstChild)
+    } else if (/video\/.*/.test(type)) {
+      let content = out[0].lb2
+      p.innerHTML = "<div class='label'>" + type + " | " + name + link + "</div>" + share + "<video controls><source src='data:" + type + ";base64," + content + "'></video>"
+      c.insertBefore(p, c.firstChild)
+    } else if (/.*\/json/.test(type)) {
+      let content = out[0].ls2
+      p.innerHTML = "<div class='label'>" + type + " | " + name + link + "</div>" + share + "<pre>" + content + "</pre>"
+      console.log(p)
+      c.insertBefore(p, c.firstChild)
+    } else if (/text\/markdown/.test(type)) {
+      let content = out[0].ls2
+      var converter = new showdown.Converter()
+      var html = converter.makeHtml(content);
+      p.innerHTML = "<div class='label'>" + type + " | " + name + link + "</div>" + share + "<div>" + html + "</div>"
+      c.insertBefore(p, c.firstChild)
+    } else if (/application\/.+/.test(type)) {
+      let content = out[0].lb2
+      p.innerHTML = "<div class='label'>" + type + " | " + name + link + "</div>" + share + "<a class='btn' href='data:" + type + ";base64," + content + "' download>Download</a>"
+      c.insertBefore(p, c.firstChild)
+    } else {
+      let content = out[0].ls2
+      p.innerHTML = "<div class='label'>" + type + " | " + name + link + "</div>" + share + "<pre>" + content + "</pre>"
+      console.log("## firstchild = ", c.firstChild)
+      c.insertBefore(p, c.firstChild)
+    }
+  } catch (e) {
+  }
+}
+  document.addEventListener("DOMContentLoaded", function(e) {
+  console.log(document.querySelector("#imgbutton"))
+  document.addEventListener("click", function(e) {
+    console.log(e.target.className)
+    if (e.target.className === 'permalink') {
+      location.reload()
+    }
+  })
+  document.querySelector("#file").onchange = function(e) {
+    console.log(e.target.files)
+    var filetype = e.target.files[0].type
+    var reader = new FileReader();
+    console.log(reader)
+    reader.addEventListener('load', function(event) {
+      databutton.build({
+        data: [
+          "19HxigV4QyBv3tHpQVcUEQyq1pzZVdoAut",
+          event.target.result,
+          filetype
+        ],
+        button: {
+          $el: "#imgbutton",
+          $pay: {
+          to: [{
+            address: "haichan@moneybutton.com",
+            value: 1000
+          },
+          {
+            address: "2564@moneybutton.com",
+            value: 1000
+          }]
+        },
+          onPayment: function(msg) {
+            document.querySelector("#imgbutton").classList.add('hidden')
+            document.querySelector("#file").classList.add('hidden')
+            console.log(msg)
+            var txid = msg.txid
+            var current_query = {
+              v: 3,
+              q: {
+                find: { "tx.h": txid },
+                limit: 1
+              }
+            };
+            var b64 = btoa(JSON.stringify(current_query))
+            var current_url = 'https://babel.bitdb.network/s/1DHDifPvtPgKFPZMRSxmVHhiPvFmxZwbfh/'+b64
+            var bitsocket = new EventSource(current_url)
+            // Event handler
+            bitsocket.onmessage = function(ee) {
+              var m = JSON.parse(ee.data)
+              console.log("m = ", m)
+              if (m.type === 'u') {
+                let out = m.data[0].out
+                let tx = m.data[0].tx.h
+                let type = m.data[0].out[0].s3
+                let name = m.data[0].out[0].s5
+                render(tx, out, type, name)
+              }
+            }
+          }
+        }
+      })
+    })
+    console.log("type = ", e.target.files[0])
+    reader.readAsArrayBuffer(e.target.files[0]);
+  }
+  /*
+  var bitsocket = new EventSource(url)
+  // Event handler
+  bitsocket.onmessage = function(ee) {
+    var m = JSON.parse(ee.data)
+    console.log("m = ", m)
+    if (m.type === 'u') {
+      let out = m.data[0].out
+      let tx = m.data[0].tx.h
+      let type = m.data[0].out[0].s3
+      render(tx, out, type)
+    }
+  }
+  */
+
+  console.log(furl)
+  if (h) {
+    fetch(furl, header).then(function(r) {
+      return r.json()
+    }).then(function(r) {
+      var items = [].concat(r.u).concat(r.c)
+      items.filter(function(item) {
+        return item.out[0]
+      }).reverse().forEach(function(item) {
+        let out = item.out
+        console.log(out)
+        let type = item.out[0].s3
+        let name = item.out[0].s5
+        let tx = item.tx.h
+        render(tx, out, type, name, item.blk)
+      })
+    }).catch(function(e) {
+      console.log(e)
+    })
+  }
+})
 var n = {
   "$nin": [
       "27a45e9fbef1ac261d46a8b8edd89a2c5c2c2a6fce86f770425832e8d7377b31",
@@ -370,31 +518,20 @@ document.addEventListener("DOMContentLoaded", function() {
     <br />
 		<input id="imglink" placeholder="b:// image link" oninvalid="this.setCustomValidity('Please use a b:// image link!')" required maxlength="68" required pattern="b://.{64}"></input>
     
-<script>
-        (function() {
-          $('form > input').on('input', function() {
-        
-            var empty = false;
-            $('form > input').each(function() {
-              if ($(this).val() == '') {
-                empty = true;
-              }
-            });
-        
-            if (empty) {
-              $('#done').attr('disabled', 'disabled');
-            } else {
-              $('#done').removeAttr('disabled');
-            }
-          });
-        })()
-        </script> 
   </form>
-  <button id="done" href="#" class="post" disabled="disabled">Post
+  <button id="done" href="#" class="post">Post
       <div id='submit' class='hidden'>
-          <div id='button'></div>
-          </div>
-  </button>
+                  <div id='button'></div>
+          </button>
+          <label for="file">Upload image</label>
+            <div id='container'>                        </div>
+
+  <input type='file' id='file'>
+
+  <div id='imgbutton'></div>
+            </input>
+  </form>
+
 </center>
 </body>
 </html>
