@@ -13,31 +13,38 @@ h2 {
   font-size: 28px;
  }
 .button {
-  border-width: 2px;
-  border-radius: 11%;
-  opacity: 85;
-  color: black;
-  font-size: 13px;
+  border-style: solid;
+  border-color: lightyellow;
+  border-width: 0.25px;
+  background: navajowhite;
+  font-size: 15px;
   margin-right: 0.25%;
   margin-top: 1%;
   margin-bottom: 1%;
+  border-radius: 5px;
+  font-family: monospace;
+  padding: 0px 2px 0px 2px;
+  border-radius: 4px;
+  
 }
 label {
-  border-style: none;
+  border-style: solid;
+  border-color: lightyellow;
+  border-width: 0.25px;
   background: navajowhite;
-  font-size: 14px;
+  font-size: 15px;
   margin-right: 0.25%;
   margin-top: 1%;
   margin-bottom: 1%;
-  /* border-radius: 5px; */
+  border-radius: 5px;
   font-family: monospace;
-  padding: 2px 0px 0px 2px;
-  border-style: solid;
-  border-color: black;
-  border-width: 1px;
+  padding: 2px 3px 1px 4px;
+  border-radius: 4px;
+  
 }
 label:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  background-color: lightyellow;
 }
 input#file {
   visibility: hidden;
@@ -62,24 +69,25 @@ input#imglink {
   padding-left: 15px;
   width: 25%;
   background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
-  margin: 15px 35px 15px;
+  margin: 15px 5px 15px;
   text-shadow: 2px 2px 4px #ffffff;
 }
 button {
-  border-style: none;
+  border-style: solid;
+  border-color: lightyellow;
+  border-width: 0.25px;
   background: navajowhite;
-  font-size: 14px;
+  font-size: 15px;
   margin-right: 0.25%;
   margin-top: 1%;
   margin-bottom: 1%;
-  /* border-radius: 5px; */
+  border-radius: 5px;
   font-family: monospace;
-  padding: 2px 0px 0px 2px;
+  padding: 2px 3px 1px 4px;
+  border-radius: 4px;
 }
 button#done {
-  border-style: solid;
-  border-width: 1px;
-  border-color: black;
+  font-size: 15px;
 }
 a#optx {
   font-size: 14px;
@@ -97,6 +105,7 @@ a#optx:hover {
 }
 button:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+  background-color: lightyellow;
 }
 .thread {
   color: black;
@@ -171,7 +180,7 @@ div.reply {
 .post {
 	color: black;
 }
-textarea#replyform {
+.replyform {
   border-style: none;
   border-radius: 5px;
   padding-top: 5px;
@@ -186,7 +195,7 @@ textarea#replyform {
   height: 114px;
 }
 
-input#replyimglink {
+.replyimglink {
   border-style: none;
   border-width: 1px;
   border-radius: 5px;
@@ -219,7 +228,6 @@ p.threadtext {
   display: inline
 }
 .submitclose {
-  border-style: solid;
   border-color: bisque;
   font-size: 14px;
   margin-right: 0.25%;
