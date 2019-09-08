@@ -19,35 +19,7 @@
       let content = out[0].lb2
       p.innerHTML = "<div class='label'>" + link + "<br />" + "<br />" + "<br />" + "</div>" + "<img src='https://bico.media/" + tx + "'></img>" + "<br />" + "<br />" + "<br />"
       c.insertBefore(p, c.firstChild)
-    } else if (/audio\/.*/.test(type)) {
-      let content = out[0].lb2
-      p.innerHTML = "<div class='label'>" + type + " | " + name + link + "</div>" + share + "<audio controls><source src='data:" + type + ";base64," + content + "'></audio>"
-      c.insertBefore(p, c.firstChild)
-    } else if (/video\/.*/.test(type)) {
-      let content = out[0].lb2
-      p.innerHTML = "<div class='label'>" + type + " | " + name + link + "</div>" + share + "<video controls><source src='data:" + type + ";base64," + content + "'></video>"
-      c.insertBefore(p, c.firstChild)
-    } else if (/.*\/json/.test(type)) {
-      let content = out[0].ls2
-      p.innerHTML = "<div class='label'>" + type + " | " + name + link + "</div>" + share + "<pre>" + content + "</pre>"
-      console.log(p)
-      c.insertBefore(p, c.firstChild)
-    } else if (/text\/markdown/.test(type)) {
-      let content = out[0].ls2
-      var converter = new showdown.Converter()
-      var html = converter.makeHtml(content);
-      p.innerHTML = "<div class='label'>" + type + " | " + name + link + "</div>" + share + "<div>" + html + "</div>"
-      c.insertBefore(p, c.firstChild)
-    } else if (/application\/.+/.test(type)) {
-      let content = out[0].lb2
-      p.innerHTML = "<div class='label'>" + type + " | " + name + link + "</div>" + share + "<a class='btn' href='data:" + type + ";base64," + content + "' download>Download</a>"
-      c.insertBefore(p, c.firstChild)
-    } else {
-      let content = out[0].ls2
-      p.innerHTML = "<div class='label'>" + type + " | " + name + link + "</div>" + share + "<pre>" + content + "</pre>"
-      console.log("## firstchild = ", c.firstChild)
-      c.insertBefore(p, c.firstChild)
-    }
+    } 
   } catch (e) {
   }
 }
@@ -186,7 +158,7 @@ var threads = {
     "limit": 700,
     },
     "r": {
-    "f": "[ .[] | { txid: .tx.h, img: .out[0].s5}]"
+      "f": " [[group_by(.out[0].s5) | unique | .[]  | {img: .[0].out[0].s5, count: . | length}] | sort_by(-.count) | .[] ]"
   }
 }
 // parse it
@@ -202,10 +174,9 @@ fetch(url, header).then(function(r) {
 }).then(function(r) {
   let res = r.u.concat(r.c)
   res.forEach(function(output) {
-    var threadid = output.txid;
     var imglink = output.img;
     var image = document.createElement("div");
-    image.id = (`${threadid}`);
+    image.id = (`${imglink}`);
     image.setAttribute('class', 'library');
    // image
     var img = document.createElement('img');
@@ -213,18 +184,18 @@ fetch(url, header).then(function(r) {
     img.setAttribute("src", `${url}`);
      //
     image.innerHTML =
-    "<img id=img" + threadid +" src=" + `${url}` + " class=libimg></img>"
-    + "<textarea id=imglink" + threadid + " style='position:absolute;left:-1000px;top:-1000px;'>"
+    "<img id=img" + imglink +" src=" + `${url}` + " class=libimg></img>"
+    + "<textarea id=imglink" + imglink + " style='position:absolute;left:-1000px;top:-1000px;'>"
     + imglink + "</textarea>" +
     "<br />" +
     "<br />"
     + "</div>";
 	document.body.appendChild(image);	
 	// the actual textarea
-	var copytext = document.getElementById("imglink" + threadid).value;
-	var copytextarea = document.getElementById("imglink" + threadid);
+	var copytext = document.getElementById("imglink" + imglink).value;
+	var copytextarea = document.getElementById("imglink" + imglink);
     console.log(copytext)
-	var copybutton = document.getElementById("img" + threadid);
+	var copybutton = document.getElementById("img" + imglink);
 	console.log("copybutton is:" + copybutton);
     copybutton.addEventListener("click", function (event) {
 		copytextarea.select();
