@@ -25,7 +25,12 @@ h2 {
   font-family: monospace;
   padding: 0px 2px 0px 2px;
   border-radius: 4px;
-  
+}
+button.quote {
+  float: right;
+  font-size: 10px;
+  border-style: none;
+  margin-right: 2%;
 }
 label {
   border-style: solid;
@@ -93,8 +98,7 @@ a#optx {
   font-size: 14px;
   background-color: navajowhite;
   color: cornsilk;
-  padding: 1px 5px 1px 5px;
-  float: right;
+  padding: 2px 3px 1px 4px;
 
 }
 a#optx:hover {
