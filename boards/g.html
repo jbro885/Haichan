@@ -1,56 +1,55 @@
 <!DOCTYPE html>
-<html>
+
 <head>
+  <script src="../scripts/app.js"></script>
+  <script src="../scripts/newthread.js"></script>
   <script src="https://www.moneybutton.com/moneybutton.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-	<script src='https://unpkg.com/datapay'></script>
-	<script src='https://unpkg.com/databutton'></script>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link href="/manifest.json" rel="manifest" /><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff">
-	<title>Haichan: A Peer-to-Peer Electronic Image Board</title>
-	<link href="../styles/style.css" rel="stylesheet" type="text/css" />
-
-  <script>
-
-  </script>
-  <script src="../scripts/app.js">
-  </script>
-  <script src="../scripts/newthread.js">
-  </script>
+  <script src='https://unpkg.com/datapay'></script>
+  <script src='https://unpkg.com/databutton'></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link href="/manifest.json" rel="manifest" />
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <title>Haichan: A Peer-to-Peer Electronic Image Board</title>
+  <link href="../styles/style.css" rel="stylesheet" type="text/css" />
 </head>
+
 <body>
-<div class="topnav"><a href="../index.html">index</a> 
-<a href="../about.html">about</a> 
-<a href="/boards/b.html">/b/</a> 
-<a href="/boards/pol.html">/pol/</a> 
-<a href="/boards/biz.html">/biz/</a> 
-<a href="/boards/tv.html">/tv/</a> 
-<a class="active" href="/boards/g.html">/g/</a> 
-<a href="/boards/a.html">/a/</a> 
-<a href="/boards/mu.html">/mu/</a>
-<a href="/boards/meta.html">/meta/</a>
-<a href="../library.html">image library</a></div>
-<h1 class="glow"><span>/g/ - Technology</span></h1>
-<center>
-<form>
-    <textarea id="newthread" placeholder="Post a new thread..."></textarea>
-    <br />
-		<input id="imglink" placeholder="b:// image link"></input>
-    <label for="file">Upload image</label>
-  </form>
-  <button id="done" href="#" class="post">Post
+  <div class="topnav"><a href="../index.html">index</a>
+    <a href="../about.html">about</a>
+    <a href="/boards/b.html">/b/</a>
+    <a href="/boards/pol.html">/pol/</a>
+    <a href="/boards/biz.html">/biz/</a>
+    <a href="/boards/tv.html">/tv/</a>
+    <a class="active" href="/boards/g.html">/g/</a>
+    <a href="/boards/a.html">/a/</a>
+    <a href="/boards/mu.html">/mu/</a>
+    <a href="/boards/meta.html">/meta/</a>
+    <a href="../library.html">image library</a></div>
+  <h1 class="glow"><span>/g/ - Technology</span></h1>
+  <center>
+    <form>
+      <textarea id="newthread" placeholder="Post a new thread..."></textarea>
+      <br />
+      <input id="imglink" placeholder="b:// image link"></input>
+      <label for="file">Upload image</label>
+    </form>
+    <button id="done" href="#" class="post">Post
       <div id='submit' class='hidden'>
-                  <div id='button'></div>
-          </button>
+        <div id='button'></div>
+    </button>
 
-            <div id='container'>                        </div>
+    <div id='container'> </div>
 
-  <input type='file' id='file'>
+    <input type='file' id='file'>
 
-  <div id='imgbutton'></div>
-            </input>
+    <div id='imgbutton'></div>
+    </input>
 
 
-</center>
+  </center>
 </body>
+
 </html>
