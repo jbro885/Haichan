@@ -2,16 +2,19 @@ body {
     font-family: monospace;
     background: rgb(255,255,255);
     background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
-  }
+}
+
 h1 {
   color: lightgreen;
   text-align: center;
   font-size: 48px;
   font-family: monospace;
 }
+
 h2 {
   font-size: 28px;
- }
+}
+
 label {
   border-style: solid;
   border-color: lightyellow;
@@ -26,10 +29,12 @@ label {
   padding: 2px 3px 1px 4px;
   border-radius: 4px;
 }
+
 label:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
   background-color: lightyellow;
 }
+
 input#file {
   visibility: hidden;
     border-width: 2px;
@@ -41,6 +46,7 @@ input#file {
   margin-top: 1%;
   margin-bottom: 1%;
 }
+
 input#imglink {
   border-style: solid;
   border-color: black;
@@ -56,17 +62,20 @@ input#imglink {
   margin: 15px 5px 15px;
   text-shadow: 2px 2px 4px #ffffff;
 }
+
 .submit {
   display: inline-block;
   overflow: auto;
   display: inline
 }
+
 .submitclose {
   border-color: bisque;
   font-size: 14px;
   margin-right: 0.25%;
   width: 7.1%;
 }
+
 button {
   border-style: solid;
   border-color: lightyellow;
@@ -81,13 +90,16 @@ button {
   padding: 2px 3px 1px 4px;
   border-radius: 4px;
 }
+
 button:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
   background-color: lightyellow;
 }
+
 button#done {
   font-size: 15px;
 }
+
 button.replytip {
   float: right;
   font-size: 10px;
@@ -113,6 +125,7 @@ button.replytip {
   box-sizing: border-box;
   transition: visibility 1s, opacity 0.5s linear;
 }
+
 div.op {
   border-color: bisque;
   background-color: cornsilk;
@@ -125,6 +138,7 @@ div.op {
   text-align: center;
   box-shadow: 3px 5px;
 }
+
 div.reply {
   border-color: black;
   border-width: 2px;
@@ -137,6 +151,7 @@ div.reply {
   margin-top: 2%;
   margin-left: 1%;
 }
+
 .pic {
   border-style: solid;
   border-color: darkslategray;
@@ -149,6 +164,7 @@ div.reply {
   background-image: inherit;
   transition: 1s;
 }
+
 .replypic {
   float: left;
   border-style: solid;
@@ -163,8 +179,8 @@ div.reply {
   height: auto;
   position: static;
   transition: 2s;
-
 }
+
 .replyform {
   border-style: none;
   border-radius: 5px;
@@ -193,9 +209,11 @@ div.reply {
   color: black;
   font-size: 15px;
 }
+
 input#replyimglink:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
+
 p.threadtext {
   color: maroon;
   font-family: monospace;
@@ -205,6 +223,7 @@ p.threadtext {
   margin: auto;
   white-space: pre-wrap;
 }
+
 p.replytext {
   text-align: center;
   /* display: -webkit-box; */
@@ -215,18 +234,23 @@ p.replytext {
   margin: 1% 6% 2% 14%;
   white-space: pre-wrap;
 }
+
 p.replytext#text {
   margin-left: 100px;
 }
+
 textarea#newthread:hover {
-box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
+
 textarea#replyform:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
+
 div.reply:hover {
   overflow: hidden;
 }
+
 textarea#newthread {
   border-radius: 3px;
   color: maroon;
@@ -240,6 +264,7 @@ textarea#newthread {
   margin: 15px 55px 5px;
   text-shadow: 2px 2px 4px #ffffff;
 }
+
 div#replyop.replybox {
   border-width: 1px;
   width: 90%;
@@ -251,14 +276,17 @@ div#replyop.replybox {
   margin-left: 5%;
   margin-bottom: 2%;
 }
+
 .replypic:active {
   transform: scale(2.5);
   position: absolute;
 }
+
 .pic:active {
   transform: scale(2.5);
   position: absolute;
 }
+
 .topnav {
 opacity: 100;
 overflow: hidden;
@@ -269,6 +297,7 @@ font-size: 30px;
 font-family: monospace;
 background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
 }
+
 .topnav a {
 float: left;
 color: #99423a;
@@ -280,10 +309,12 @@ cursor: pointer;
 -webkit-transition-duration: 0.4s; /* Safari */
 transition-duration: 0.4s;
 }
+
 .topnav a:hover {
 background-color: lightsalmon;
 color: mediumseagreen;
 }
+
 .topnav a.active {
 background-color: mediumseagreen;
 color: lightsalmon;
@@ -292,16 +323,17 @@ color: lightsalmon;
 input#imglink:hover {
 box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
+
 hr {
   color: bisque;
   visibility: hidden;
 }
+
 .hidden {
   visibility: hidden;
   display:none;
   transition: visibility 0s 2s, opacity 2s linear;
 }
-
 
 .topnav a {
 float: left;
@@ -314,34 +346,38 @@ cursor: pointer;
 -webkit-transition-duration: 0.4s; /* Safari */
 transition-duration: 0.4s;
 }
+
 .topnav a:hover {
 background-color: lightsalmon;
 color: mediumseagreen;
 }
+
 .topnav a.active {
 background-color: mediumseagreen;
 color: lightsalmon;
 }
+
 div#news {
   box-shadow: 2px 4px;
   background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
    width: 70%;
 }
+
 div#news:hover {
   box-shadow: 1px 1px;
   background-color: linear-gradient(257deg, rgba(255,214,140,1) 95%, rgba(255,255,255,1) 95% );
 }
+
 a#optx {
   font-size: 14px;
   background-color: navajowhite;
   color: cornsilk;
   padding: 1px 5px 1px 5px;
   float: right;
-
 }
+
 a#optx:hover {
   font-size: 14px;
   background-color: bisque;
   color: maroon;
-
 }
