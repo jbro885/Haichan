@@ -12,21 +12,6 @@ h1 {
 h2 {
   font-size: 28px;
  }
-.button {
-  border-style: solid;
-  border-color: lightyellow;
-  border-width: 0.25px;
-  background: navajowhite;
-  font-size: 15px;
-  margin-right: 0.25%;
-  margin-top: 1%;
-  margin-bottom: 1%;
-  border-radius: 5px;
-  font-family: monospace;
-  padding: 0px 2px 0px 2px;
-  border-radius: 4px;
-  
-}
 label {
   border-style: solid;
   border-color: lightyellow;
@@ -40,7 +25,6 @@ label {
   font-family: monospace;
   padding: 2px 3px 1px 4px;
   border-radius: 4px;
-  
 }
 label:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
@@ -72,6 +56,17 @@ input#imglink {
   margin: 15px 5px 15px;
   text-shadow: 2px 2px 4px #ffffff;
 }
+.submit {
+  display: inline-block;
+  overflow: auto;
+  display: inline
+}
+.submitclose {
+  border-color: bisque;
+  font-size: 14px;
+  margin-right: 0.25%;
+  width: 7.1%;
+}
 button {
   border-style: solid;
   border-color: lightyellow;
@@ -86,27 +81,20 @@ button {
   padding: 2px 3px 1px 4px;
   border-radius: 4px;
 }
-button#done {
-  font-size: 15px;
-}
-a#optx {
-  font-size: 14px;
-  background-color: navajowhite;
-  color: cornsilk;
-  padding: 1px 5px 1px 5px;
-  float: right;
-
-}
-a#optx:hover {
-  font-size: 14px;
-  background-color: bisque;
-  color: maroon;
-
-}
 button:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
   background-color: lightyellow;
 }
+button#done {
+  font-size: 15px;
+}
+button.replytip {
+  float: right;
+  font-size: 10px;
+  border-style: none;
+  margin-right: 2%;
+}
+
 .thread {
   color: black;
   box-shadow: 6px 9px;
@@ -177,9 +165,6 @@ div.reply {
   transition: 2s;
 
 }
-.post {
-	color: black;
-}
 .replyform {
   border-style: none;
   border-radius: 5px;
@@ -210,37 +195,16 @@ div.reply {
 }
 input#replyimglink:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
-  filter: none;
 }
 p.threadtext {
   color: maroon;
   font-family: monospace;
-  /* color: black; */
   padding-right: 5%;
   padding-left: 5%;
   padding-top: 2%;
   margin: auto;
   white-space: pre-wrap;
 }
-.submit {
-  display: inline-block;
-  overflow: auto;
-  display: inline
-}
-.submitclose {
-  border-color: bisque;
-  font-size: 14px;
-  margin-right: 0.25%;
-  width: 7.1%;
-}
-
-button.replytip {
-  float: right;
-  font-size: 10px;
-  border-style: none;
-  margin-right: 2%;
-}
-
 p.replytext {
   text-align: center;
   /* display: -webkit-box; */
@@ -254,14 +218,14 @@ p.replytext {
 p.replytext#text {
   margin-left: 100px;
 }
-div#news {
-  box-shadow: 2px 4px;
-  background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
-   width: 70%;
+textarea#newthread:hover {
+box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
-div#news:hover {
-  box-shadow: 1px 1px;
-  background-color: linear-gradient(257deg, rgba(255,214,140,1) 95%, rgba(255,255,255,1) 95% );
+textarea#replyform:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+div.reply:hover {
+  overflow: hidden;
 }
 textarea#newthread {
   border-radius: 3px;
@@ -278,7 +242,6 @@ textarea#newthread {
 }
 div#replyop.replybox {
   border-width: 1px;
-  /* border-style: solid; */
   width: 90%;
   overflow: auto;
   box-sizing: border-box;
@@ -288,39 +251,6 @@ div#replyop.replybox {
   margin-left: 5%;
   margin-bottom: 2%;
 }
-.library {
-  color: black;
-  box-shadow: 6px 9px;
-  border-width: 2px;
-  padding-top: 2px;
-  padding-right: 15px;
-  padding-bottom: 15px;
-  padding-left: 15px;
-  background: linear-gradient(267deg, rgb(255,214,140,1) 0%, rgba(84,158,14,1) 95%);
-  margin-left: 4%;
-  margin-bottom: 50px;
-  text-align: justify;
-  overflow: auto;
-  box-sizing: border-box;
-  width: 400px;
-}
-.libimg {
-  border-style: solid;
-  border-color: darkslategray;
-  border-width: 1px; 
-  float: left;
-  margin-top: 15px;
-  margin-left: 15px;
-  object-fit: cover;
-  width: 250px;
-  height: 187px;
-  border-radius: 50%;
-}
-iframe {
-  overflow: hidden;
-  position: sticky;
-  float: right;
-}
 .replypic:active {
   transform: scale(2.5);
   position: absolute;
@@ -328,13 +258,6 @@ iframe {
 .pic:active {
   transform: scale(2.5);
   position: absolute;
-}
-input:required:invalid:focus {
-  filter: blur(2px);
- -webkit-filter: blur(2px);
-}
-.button1:hover {
-  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
 .topnav {
 opacity: 100;
@@ -365,9 +288,7 @@ color: mediumseagreen;
 background-color: mediumseagreen;
 color: lightsalmon;
 }
-textarea#newthread:hover {
-box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
-}
+
 input#imglink:hover {
 box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
@@ -380,9 +301,47 @@ hr {
   display:none;
   transition: visibility 0s 2s, opacity 2s linear;
 }
-textarea#replyform:hover {
-  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+
+
+.topnav a {
+float: left;
+color: #99423a;
+font-size: 20px;
+text-align: center;
+padding: 6px 12px;
+text-decoration: none;
+cursor: pointer;
+-webkit-transition-duration: 0.4s; /* Safari */
+transition-duration: 0.4s;
 }
-div.reply:hover {
-  overflow: hidden;
+.topnav a:hover {
+background-color: lightsalmon;
+color: mediumseagreen;
+}
+.topnav a.active {
+background-color: mediumseagreen;
+color: lightsalmon;
+}
+div#news {
+  box-shadow: 2px 4px;
+  background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
+   width: 70%;
+}
+div#news:hover {
+  box-shadow: 1px 1px;
+  background-color: linear-gradient(257deg, rgba(255,214,140,1) 95%, rgba(255,255,255,1) 95% );
+}
+a#optx {
+  font-size: 14px;
+  background-color: navajowhite;
+  color: cornsilk;
+  padding: 1px 5px 1px 5px;
+  float: right;
+
+}
+a#optx:hover {
+  font-size: 14px;
+  background-color: bisque;
+  color: maroon;
+
 }
