@@ -23,9 +23,13 @@ To post on Haichan, you'll need a compatible web wallet such as Money Button or 
 # Related
 
 https://planaria.network/
+
 https://bitdb.network/
+
 https://github.com/unwriter/datapay
+
 https://www.moneybutton.com
+
 https://one.relayx.io/
 
  
