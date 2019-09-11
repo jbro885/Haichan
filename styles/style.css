@@ -257,7 +257,7 @@ p.replytext#text {
 div#news {
   box-shadow: 2px 4px;
   background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
-  width: 40%
+   width: 70%;
 }
 div#news:hover {
   box-shadow: 1px 1px;
