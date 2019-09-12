@@ -1,4 +1,6 @@
-// define the board being queried
+// this is some pretty hairy code! so buckle up...
+// start by definining the board being queried based on the current URL
+
 var path = window.location.pathname;
 
 var page = path.split("/").pop();
@@ -7,7 +9,7 @@ var boardname = page.replace(".html", "")
 
 var board = "/" + boardname + "/"
 
-// this is all for the "upload image" input
+// this is all for the "upload image" stuff
 
 var render = function (tx, out, type, name, blk) {
   var link = "b://" + tx;
@@ -129,6 +131,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
 })
 
 // banned txid's
+// these txid's are being excluded from the query results
+// soon this will all be done seperately, and banned txid's won't be easily viewable
 
 var n = {
   "$nin": [
@@ -137,7 +141,7 @@ var n = {
     "3b9e1eb8f67b1ac587a656ab11a9b52c26784c3ded9bd859cf702c517dbab642",
     "81080aa2d2dd0a72d93f4e6b4dec431946cd88fd0697d3aa32ccf124c5d346c8",
     "1f468e3f5e0635c3c2f7c820a4dd83c800c876c424cccbf89b1d0456c4ecc732",
-    "7165cffbe9f17840ae1f5b105be93c7b42df4c43081229f3462f26842b7b3127",
+    "d34b061b40c872d65c18ac9238669ade4141eecf1592158ba7058e0e40077fc9",
     "98565893fa4ab38557f84fac633243c006c469fb2046e6c64e617c27066c890e",
     "4aa8d823d724c4c184843126b4d22149bd0124f7c74d02ae4b74342365102cbc",
     "4e1c5a0c7073c7bb833fc120c476c473f8e3c0a09b2823461d24d54bb510f796",
@@ -150,9 +154,14 @@ var n = {
     "16ea1ab8c28a9cee95163bafd87f77349cfa39826eb4aa549de48987122678b7",
     "de773a423d27f49f1fff120a66fc80a93ff4c6d125f31de8fac5e802db164db8",
     "3262e4f5e429d8c46860500e552d11f7a1fdc58ca8135536b802c8017ff1d42e",
-    "f17ebfcc02f9e815db086baf6ff8ff72d758934a4ef2073ddcc3ad954c05214a"
+    "8d333d53fab7f5f327f885177e0eea323bf9bcdc0547a3a6983fec1deb34d0f4",
+    "8c274a4b16ec5275c37b5af94671c180b82219846ad5a0c5069639a9f1dcf38d",
+    "b3edaf249b4ba5f192047a037b7c9f3a646ae66be4b05e19a51d44f89965176f",
+    "4e1c5a0c7073c7bb833fc120c476c473f8e3c0a09b2823461d24d54bb510f796"
   ]
 }
+
+// query for threads
 
 var threads = {
   "v": 3,
@@ -177,7 +186,6 @@ var threads = {
   }
 }
 var b64 = btoa(JSON.stringify(threads));
-
 var url = "https://neongenesis.bitdb.network/q/1HcBPzWoKDL2FhCMbocQmLuFTYsiD73u1j/" + b64;
 var header = {
   headers: { key: "14QX7pn5GbipWvNLyDfrdcZLzwvPYJSnhB" }
@@ -188,16 +196,12 @@ fetch(url, header).then(function (r) {
   let res = r.u.concat(r.c)
   res.forEach(function (output) {
     var threadid = output.txid;
-    var content = output.txt;
     var op = output.op;
-    var opimg = output.img;
+    var url = "https://bico.media/" + output.img + ".png"
     var threadtext = document.createTextNode(`${output.txt}`);
     var thread = document.createElement("div");
     thread.id = (`${threadid}`);
     thread.setAttribute('class', 'thread');
-    var opid = "replydone" + threadid;
-    var img = document.createElement('img');
-    var url = "https://bico.media/" + output.img + ".png"
     var txurl = "https://whatsonchain.com/tx/" + output.txid;
     thread.innerHTML =
       //minimize thread
@@ -226,6 +230,7 @@ fetch(url, header).then(function (r) {
       $("p.threadtext:contains(>)").css("color", "yellowgreen");
     });
     thread.querySelector("#optext" + threadid).appendChild(threadtext);
+    // reply to thread
     thread.querySelector("#openreply").addEventListener("click", function (e) {
       thread.querySelector("#replyform" + threadid).classList.remove('hidden')
       thread.querySelector("#replyform" + threadid).classList.add('replyform')
@@ -233,12 +238,12 @@ fetch(url, header).then(function (r) {
       thread.querySelector("#replyop" + threadid).classList.add('replybox')
       thread.querySelector("#replyimglink" + threadid).classList.remove('hidden')
       thread.querySelector("#replyimglink" + threadid).classList.add('replyimglink')
-
       thread.querySelector("#replysubmit").classList.remove('hidden')
       thread.querySelector("#closereply").classList.remove('hidden')
       thread.querySelector("#replydone" + threadid).classList.remove('hidden')
       thread.querySelector("#openreply").classList.add('hidden')
     });
+    // close replyform
     thread.querySelector("#closereply").addEventListener("click", function (e) {
       thread.querySelector("#replyform" + threadid).classList.add('hidden')
       thread.querySelector("#replyimglink" + threadid).classList.add('hidden')
@@ -248,13 +253,15 @@ fetch(url, header).then(function (r) {
       thread.querySelector("#closereply").classList.add('hidden')
       thread.querySelector("#replyop").classList.add('hidden')
     });
+    // show button for tip
     thread.querySelector("#tipop" + threadid).addEventListener("click", function (e) {
       thread.querySelector("#optipsubmit" + threadid).classList.remove('hidden')
     });
-
+    // minimize thread
     thread.querySelector("#minimize" + threadid).addEventListener("click", function (e) {
       thread.classList.add('hidden')
     });
+    // tip op
     thread.querySelector("#tipop" + threadid).addEventListener("click", function (e) {
       thread.querySelector("#optipbutton" + threadid).classList.remove('hidden')
       thread.querySelector("#optipsubmit" + threadid).classList.add('submitclose')
@@ -271,6 +278,7 @@ fetch(url, header).then(function (r) {
         }
       })
     })
+    // render the money button after querying for the b:// image's origin address
     thread.querySelector("#replydone" + threadid).addEventListener("click", function (e) {
       var btip = thread.querySelector("#replyimglink" + threadid).value;
       var tip = btip.replace("b://", '');
@@ -342,6 +350,7 @@ fetch(url, header).then(function (r) {
         })
       })
     })
+    // query for replies to thread based on txid (threadid)
     var replies = {
       "v": 3,
       "q": {
@@ -400,8 +409,8 @@ fetch(url, header).then(function (r) {
           " class='hidden'>Close</button>" + "</button>" +
           "<p id=replytext" + replytxid + " class='replytext'>" + "</p>" + "</p>";
         thread.appendChild(reply);
-        //greentext for replies
-        //currently under construction! ☠️
+        // greentext for replies
+        // currently under construction! ☠️
         //$("#replytext" + threadid).ready(function() {
         //$("p.replytext:contains(>)").css("color", "yellowgreen");
         //});
@@ -424,6 +433,7 @@ fetch(url, header).then(function (r) {
             }
           });
         });
+        // not even sure if this is still relevant, but it /was/ for closing the reply tip box
         thread.querySelector("#replytipclose" + replyp).addEventListener("click", function (e) {
           thread.querySelector("#replytipsubmit" + replyp).classList.add('hidden')
           thread.querySelector("#replytipsubmit" + replyp).classList.remove('submitclose')
@@ -434,3 +444,6 @@ fetch(url, header).then(function (r) {
     })
   })
 })
+
+// post credits scene:
+// https://soundcloud.com/l_a_n/new-life-now-by-oneohtrix
