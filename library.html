@@ -175,16 +175,19 @@ fetch(url, header).then(function(r) {
   let res = r.u.concat(r.c)
   res.forEach(function(output) {
     var imglink = output.img;
+    var count = output.count;
+    console.log(count)
     var image = document.createElement("div");
     image.id = (`${imglink}`);
     image.setAttribute('class', 'library');
    // image
     var img = document.createElement('img');
-    var url = "https://bico.media/" + output.img + ".png"
+    var url = "https://bico.media/" + output.img;
     img.setAttribute("src", `${url}`);
      //
     image.innerHTML =
-    "<img id=img" + imglink +" src=" + `${url}` + " class=libimg></img>"
+    "<img id=img" + imglink +" src=" + `${url}` + " class=libimg></img>" +
+    "<p id=count>" + count + "</p>"
     + "<textarea id=imglink" + imglink + " style='position:absolute;left:-1000px;top:-1000px;'>"
     + imglink + "</textarea>" +
     "<br />" +

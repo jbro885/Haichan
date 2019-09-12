@@ -6,6 +6,13 @@ body {
 p {
   text-align: center;
   font-family: monospace;
+  font-size: 25px;
+}
+p#count {
+  text-align: center;
+  font-family: monospace;
+  background: black;
+  color: white;
 }
 h1 {
   color: lightgreen;
@@ -34,8 +41,6 @@ h2 {
    display: inline-block;
    width: 241px;
    height: 133px;
-   box-shadow: 5px 3px;
-
  }
  button {
    margin-top: 15px;
@@ -54,7 +59,6 @@ opacity: 100;
     font-family: monospace;
     background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
 }
-
 .topnav a {
 float: left;
     color: #99423a;
@@ -66,20 +70,15 @@ float: left;
     -webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
 }
-
 .topnav a:hover {
   background-color: lightsalmon;
   color: mediumseagreen;
 }
-
 .topnav a.active {
   background-color: mediumseagreen;
   color: lightsalmon;
 }
-}
 div#container {
     display: table-caption;
     padding: 2% 2% 2% 2%;
-    background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
-    box-shadow: 1px 2px;
   }
