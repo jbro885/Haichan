@@ -31,16 +31,17 @@ h2 {
  }
  .libimg {
   object-fit: cover;
-  width: 248px;
-  height: 139px;
+  width: 182px;
+  height: 134px;
  }
  textarea {
    margin: auto;
  }
  .library {
-   display: inline-block;
-   width: 241px;
-   height: 133px;
+  display: inline-block;
+  width: 178px;
+  height: 133px;
+  box-shadow: 5px 3px;
  }
  button {
    margin-top: 15px;
@@ -78,7 +79,4 @@ float: left;
   background-color: mediumseagreen;
   color: lightsalmon;
 }
-div#container {
-    display: table-caption;
-    padding: 2% 2% 2% 2%;
-  }
+
