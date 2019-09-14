@@ -1,4 +1,4 @@
-#Protocol
+# Protocol
 
 s1: "1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje" // bitcom protocol address (https://bterm.network/#address=1P8FmmWdyRY1bmHJso6nGc7smBSvwvFoje)
 
