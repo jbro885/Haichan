@@ -157,7 +157,8 @@ var n = {
     "8d333d53fab7f5f327f885177e0eea323bf9bcdc0547a3a6983fec1deb34d0f4",
     "8c274a4b16ec5275c37b5af94671c180b82219846ad5a0c5069639a9f1dcf38d",
     "b3edaf249b4ba5f192047a037b7c9f3a646ae66be4b05e19a51d44f89965176f",
-    "4e1c5a0c7073c7bb833fc120c476c473f8e3c0a09b2823461d24d54bb510f796"
+    "4e1c5a0c7073c7bb833fc120c476c473f8e3c0a09b2823461d24d54bb510f796",
+    "72fbcb51022deda042fd495257ff090677ad10613e09a3c9e2268446a038e8b8"
   ]
 }
 
@@ -225,7 +226,9 @@ fetch(url, header).then(function (r) {
       "<button href='#' id='closereply' style='center' class='hidden'>Close</button>" + "<br />" +
       "<div id='replysubmit' class='hidden'>" + "<br />" +
       "<div id=replybutton" + threadid + "></div>" + "</div>" + "</div>" + "</div>";
+      // append the thread to the page
     document.body.appendChild(thread);
+    // greentext... needs work
     $("#optext" + threadid).ready(function () {
       $("p.threadtext:contains(>)").css("color", "yellowgreen");
     });

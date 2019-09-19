@@ -223,7 +223,10 @@ p.threadtext {
   margin: auto;
   white-space: pre-wrap;
 }
-
+div#recentposts {
+  border-style: solid;
+  background-color: cornsilk;
+}
 p.replytext {
   text-align: center;
   /* display: -webkit-box; */
@@ -358,16 +361,12 @@ color: lightsalmon;
 }
 
 div#news {
-  box-shadow: 2px 4px;
-  background: linear-gradient(267deg, rgba(255,255,255,1) 0%, rgba(255,214,140,1) 95%);
-   width: 70%;
+  width: 70%;
 }
-
-div#news:hover {
-  box-shadow: 1px 1px;
-  background-color: linear-gradient(257deg, rgba(255,214,140,1) 95%, rgba(255,255,255,1) 95% );
+div#updates {
+  border-style: solid;
+  background-color: cornsilk;
 }
-
 a#optx {
   font-size: 14px;
   background-color: navajowhite;
